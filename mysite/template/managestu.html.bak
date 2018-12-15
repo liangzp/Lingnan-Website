@@ -1,0 +1,13 @@
+<!DOCTYPE HTML>
+<html>
+<head> 
+     <meta charset="utf-8">
+     <title>manage html</title>
+</head>
+<body>
+     <p>欢迎回来，{{user}}!</p>
+     <p>{{info}}</p>
+     <p>{{intro}}</p>
+     <a href="/my_app/applypage/">前往申请课室</a>
+     <a href="/my_app/checkapplication/">检查申请是否通过</a>
+</body>

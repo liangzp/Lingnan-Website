@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html>
+  <meta charset="utf-8">
+  <head>
+    <title>ApplySelClassroom</title>
+  </head>
+  <script type="text/javascript">
+  	function jump()
+  	{
+  		var form1 = document.form1;
+  		form1.action="/my_app/applysuccess/";
+  		form1.submit();
+  	}
+  	function back()
+  	{
+  		var form1 = document.form1;
+  		form1.action="/my_app/applypage/";
+  		form1.submit();
+  	}
+	</script>
+  <body>
+  	申请日期：{{date}}  课室要求人数：{{maxnum}} 申请时间段：第{{begintime}}节课到{{endtime}}节课<br>
+  	满足以上条件的课室如下：<br>
+  	<form name="form1" action="">
+  	<input type="hidden" name="phonenumber" id="phonenumber" value={{phonenumber}} />
+  	<input type="hidden" name="date" id="date" value={{date}} />
+  	<input type="hidden" name="maxnum" id="maxnum" value={{maxnum}} />
+  	<input type="hidden" name="activity" id="activity" value={{activity}} />
+  	<input type="hidden" name="begintime" id="begintime" value={{begintime}} />
+  	<input type="hidden" name="endtime" id="endtime" value={{endtime}} />
+		<table border="1">
+        <tr>
+        	 <th>建筑物</th>
+           <th>课室编号</th>
+           <th>课室最大容量</th>
+           <th>选择</th>
+        </tr>
+        {% for cla in classroom %}
+        <tr>
+        	 <td>{{cla.building}}</td>
+        	 <td>{{cla.room}}</td>
+        	 <td>{{cla.maxnum}}</td>
+        	 <td>
+        	 	 <input type="radio" name="cla" id="{{ forloop.counter }}" value="{{cla.building}}-{{cla.room}}"/>
+        	 </td>
+        </tr>
+        {% endfor %}
+     </table>
+     <input type="button" value="确定" onclick="jump()"/>
+     <input type="button" value="重新修改时间段" onclick="back()"/>
+   </form>
+   <script type="text/javascript">
+  	 robj=document.getElementById("1");
+		 robj.checked=true;
+	 </script>
+	 <a href="/my_app/applypage/">重新填写课室申请</a>
+  </body>
+</html>

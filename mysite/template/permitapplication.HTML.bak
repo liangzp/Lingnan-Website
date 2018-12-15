@@ -1,0 +1,92 @@
+<!DOCTYPE HTML>
+<html>
+<head> 
+     <meta charset="utf-8">
+     <title>permit html</title>
+</head>
+<script type="text/javascript">
+function activate(x)
+{
+	document.getElementById(x+"opinion").disabled = false;
+}
+function diasbledtext(x)
+{
+	document.getElementById(x+"opinion").disabled = true;
+}
+</script>
+<body>
+	   <form action="/my_app/updatestatus">
+	     <table border="1">
+	        <tr>
+	           <th>申请人</th>
+	           <th>申请日期</th>
+	           <th>所在时间段</th>
+	           <th>申请提交时间</th>
+	           <th>申请课室</th>
+	           <th>活动事项</th>
+	           <th>申请状态</th>
+	           <th>同意</th>
+	           <th>不同意</th>
+	           <th>提交结果</th>
+	           <th>反馈意见</th>
+	        </tr>
+	        {% for app in appall %}
+	        <tr>
+	        	 <td>{{app.name}}</td>
+	        	 <td>{{app.date}}</td>
+	        	 <td>{{app.begintime}}~{{app.endtime}}</td>
+	        	 <td>{{app.submittime}}</td>
+	        	 <td>{{app.classroom}}</td>
+	        	 <td>{{app.activity}}</td>
+	        	 <td>{{app.status}}</td>
+	           <td><input type="radio" onclick="diasbledtext(this.name)" name={{ forloop.counter }} value="yes" /></td>
+	           <td><input type="radio" onclick="activate(this.name)" name={{ forloop.counter }} value="no" /></td>
+	           <td><input type="radio" onclick="diasbledtext(this.name)" name={{ forloop.counter }} value="wait" checked/></td>
+	           <td><input type="text" name="{{ forloop.counter }}opinion" id="{{ forloop.counter }}opinion" style="width:600px; height:20px;" disabled=true/></td>
+	        </tr>
+	        {% endfor %}
+	     </table>
+	     <input type="submit" value="提交结果" />
+     </form>
+     <a href="/my_app/managetea/">返回manage界面</a>
+     <form name="form2" action="/my_app/permitapplication/">
+     	  <input type="date" id="targetday" name="targetday" value="{{targetday}}" required/>下各课室使用情况<br>
+        <input type="submit" name="checkdate" id="checkdate" value="搜索" />
+   	 </form>
+   	 <table border="1">
+	        <tr>
+	           <th>建筑物</th>
+	           <th>房间</th>
+	           <th>最大容纳人数</th>
+	           <th>1</th>
+	           <th>2</th>
+	           <th>3</th>
+	           <th>4</th>
+	           <th>5</th>
+	           <th>6</th>
+	           <th>7</th>
+	           <th>8</th>
+	           <th>9</th>
+	           <th>10</th>
+	           <th>11</th>
+	        </tr>
+	        {% for classroom in classroomlist %}
+	        <tr>
+	        	 <td>{{classroom.building}}</td>
+	        	 <td>{{classroom.room}}</td>
+	        	 <td>{{classroom.maxnum}}</td>
+	        	 <td>{{classroom.status.1}}</td>
+	        	 <td>{{classroom.status.4}}</td>
+	        	 <td>{{classroom.status.7}}</td>
+	        	 <td>{{classroom.status.10}}</td>
+	        	 <td>{{classroom.status.13}}</td>
+	        	 <td>{{classroom.status.16}}</td>
+	        	 <td>{{classroom.status.19}}</td>
+	        	 <td>{{classroom.status.22}}</td>
+	        	 <td>{{classroom.status.25}}</td>
+	        	 <td>{{classroom.status.28}}</td>
+	        	 <td>{{classroom.status.31}}</td>
+	        </tr>
+	        {% endfor %}
+	     </table>
+</body>

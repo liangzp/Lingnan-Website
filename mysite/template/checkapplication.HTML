@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html>
+<head> 
+     <meta charset="utf-8">
+     <title>check-application html</title>
+</head>
+<body>
+     <p>{{user}}的申请列表</p>
+     <table border="1">
+        <tr>
+           <th>申请时间</th>
+           <th>申请提交时间</th>
+           <th>申请课室</th>
+           <th>状态</th>
+           <th>反馈意见</th>
+        </tr>
+        {% for app in applist %}
+        <tr>
+           <td>{{app.date}}</td>
+           <td>{{app.submittime}}</td>
+           <td>{{app.classroom}}</td>
+           <td>{{app.status}}</td>
+           <td>{{app.feedback}}</td>
+        </tr>
+        {% endfor %}
+     </table>
+     <a href="/my_app/managestu/">返回manage界面</a>
+</body>

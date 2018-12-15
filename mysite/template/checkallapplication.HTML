@@ -1,0 +1,72 @@
+<!DOCTYPE HTML>
+<html>
+<head> 
+     <meta charset="utf-8">
+     <title>中山大学岭南（大学）学院教务系统</title>
+	 
+	<link rel='stylesheet' href='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css'>	
+	<script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+		
+	 <style type='text/css'>
+	#header .header-body{
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url(http://lingnan.sysu.edu.cn/profiles/custom/sysu/modules/sysu_manage/images/lingnan/header-bg.png);
+    background-size: cover;
+    min-height: 158px;
+    max-width: 9000px;
+    padding: 0px;
+}
+</style>
+</head>
+
+
+<body>
+
+<div id="header" class="header-bg-primary">
+<div class="header-body">
+      <div class="header-container header-top inner ">
+        <div class="header-row">
+          <!-- logo -->
+		  
+          <div class="header-column">
+            <div id="site-logo" class="header-logo">
+              <a href="/"><img src="http://lingnan.sysu.edu.cn/sites/lingnan.prod.dpweb3.sysu.edu.cn/files/logo_1_0.png"/></a>
+            </div>
+          </div>
+          
+		 </div>
+		 </div>
+		 </div>
+	</div>
+	
+	
+	
+	
+	     <table class="table table-bordered">
+        <thead>
+           <th>申请人</th>
+           <th>申请日期</th>
+           <th>所在时间段</th>
+           <th>申请提交时间</th>
+           <th>申请课室</th>
+           <th>活动事项</th>
+           <th>申请状态</th>
+           <th>反馈意见</th>
+        </thead>
+        {% for app in appall %}
+        <tr>
+        	 <td>{{app.name}}</td>
+        	 <td>{{app.date}}</td>
+        	 <td>{{app.begintime}}~{{app.endtime}}</td>
+        	 <td>{{app.submittime}}</td>
+        	 <td>{{app.classroom}}</td>
+        	 <td>{{app.activity}}</td>
+        	 <td>{{app.status}}</td>
+        	 <td>{{app.feedback}}</td>
+        </tr>
+        {% endfor %}
+     </table>
+     <a href="/my_app/managetea/">返回主页</a>
+</body>

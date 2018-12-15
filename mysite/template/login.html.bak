@@ -1,0 +1,18 @@
+<!DOCTYPE HTML>
+<html>
+  <meta charset="utf-8">
+  <head>
+    <title>Login.html</title>
+  </head>
+  <body>
+    {{string}}
+    <form action="loginsuccess.html">
+      netid：<input type="text" id="uname" name="uname"/><br>
+      密码：<input type="password" id="pwd" name="password"/><br>
+      <input type="submit" class="btn btn-lg btn-primary btn-block" value="提交"/>
+    </form>
+    {% if submitagain  %}
+      <p>登陆失败，请重新尝试</p>
+    {% endif %}
+  </body>
+</html>

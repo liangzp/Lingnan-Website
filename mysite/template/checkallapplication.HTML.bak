@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html>
+<head> 
+     <meta charset="utf-8">
+     <title>permit html</title>
+</head>
+<body>
+     <table border="1">
+        <tr>
+           <th>申请人</th>
+           <th>申请日期</th>
+           <th>所在时间段</th>
+           <th>申请提交时间</th>
+           <th>申请课室</th>
+           <th>活动事项</th>
+           <th>申请状态</th>
+           <th>反馈意见</th>
+        </tr>
+        {% for app in appall %}
+        <tr>
+        	 <td>{{app.name}}</td>
+        	 <td>{{app.date}}</td>
+        	 <td>{{app.begintime}}~{{app.endtime}}</td>
+        	 <td>{{app.submittime}}</td>
+        	 <td>{{app.activity}}</td>
+        	 <td>{{app.status}}</td>
+        	 <td>{{app.feedback}}</td>
+        </tr>
+        {% endfor %}
+     </table>
+     <a href="/my_app/managetea/">返回manage界面</a>
+</body>

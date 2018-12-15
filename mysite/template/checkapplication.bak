@@ -1,0 +1,19 @@
+<!DOCTYPE HTML>
+<html>
+<head> 
+     <meta charset="utf-8">
+     <title>check-application html</title>
+</head>
+<body>
+     <p>{{user}}的申请状态</p>
+     <table border="1">
+        <tr>
+           <th>月份</th>
+           <th>存款</th>
+        </tr>
+        {% for story in story_list %}
+
+        {% endfor %}
+     </table>
+     <a href="/my_app/managestu/">返回manage界面</a>
+</body>

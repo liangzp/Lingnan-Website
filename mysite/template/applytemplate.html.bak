@@ -1,0 +1,133 @@
+<!DOCTYPE HTML>
+<html>
+  <meta charset="utf-8">
+  <head>
+    <title>Apply.html</title>
+    <script type="text/javascript">
+			function changesel(value)
+			{
+		  	if(Number(document.getElementById("endtime").value)<Number(value))
+		  	{
+		  		document.getElementById("endtime").value=value
+		  	}
+			}
+			function changeselsec(value)
+			{
+				if(Number(document.getElementById("begintime").value)>Number(value))
+		  	{
+		  		document.getElementById("endtime").value=document.getElementById("begintime").value
+		  	}
+			}
+			function submitapply()
+			{
+	  		//var reg = new RegExp("^[A-Za-z0-9]+$");
+	  		//form1.submit();
+	  		var reg = new RegExp("[0-9]{11}");
+	  		if(!reg.test(document.getElementById("phonenumber").value))
+	  		{
+	  			alert("电话输入不合要求");
+	  			return;
+	  		}
+	  		if(document.getElementById("phonenumber").value=="")
+	  		{
+	  			alert("请填写课室用途");
+	  			return;
+	  		}
+	  		reg = new RegExp("[0-9]+");
+	  		if(!reg.test(document.getElementById("maxnum").value))
+	  		{
+	  			alert("请填写课室用途");
+	  			return;
+	  		}
+	  		var form1 = document.form1;
+	  		form1.action="/my_app/applyselclassroom/";
+	  		form1.submit();
+			}
+			<!--
+			function search()
+			{
+				var form1 = document.form1;
+	  		form1.action="/my_app/applypage/";
+	  		form1.submit();
+			}
+			-->
+		</script>
+  </head> 
+  <body>
+    <form action="" name="form1">
+      手机：<input type="text" id="phonenumber" name="phonenumber" required pattern="[0-9]{11}" value="{{phonenumber}}" />请输入11位电话号码<br>
+      活动事项：<input type="text" id="activity" name="activity" style="width:300px; height:60px;" value="{{activity}}" required></textarea>请在100字以内简要描述课室的用途<br>
+      从第<select name="begintime" id="begintime" onchange="changesel(this.value)">
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+			<option value="6">6</option>
+			<option value="7">7</option>
+			<option value="8">8</option>
+			<option value="9">9</option>
+			<option value="10">10</option>
+			<option value="11">11</option>
+			</select>节课开始，到第
+			<select name="endtime" id="endtime" onchange="changeselsec(this.value)">
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+			<option value="6">6</option>
+			<option value="7">7</option>
+			<option value="8">8</option>
+			<option value="9">9</option>
+			<option value="10">10</option>
+			<option value="11">11</option>
+			</select>节课结束<br><!--<input type="button" value="检索可用课室" onclick="search()" />-->
+			（按照课表，例如如果选择从1节课开始到第2节课结束，就代表申请8:00-9:40时间段的课室）<br>
+			
+      申请日期：<input type="date" id="date" name="date" value={{date}} min="{{mindate}}" max="{{maxdate}}" required />只能申请未来7天的课室<br>
+      活动人数：<input type="text" id="maxnum" name="maxnum" required pattern="[0-9]+" value="{{maxnum}}"  /><br>
+      <input type="button" value="提交" onclick="submitapply()" /><br>   
+      <a href="/my_app/managestu">返回主页</a>
+	    <!--
+	    可用课室列表如下：
+			<table border="2">
+	        <tr>
+	        	 <th>建筑物</th>
+	           <th>课室编号</th>
+	           <th>课室最大容量</th>
+	           <th>选择</th>
+	        </tr>
+	        {% for cla in classlist %}
+	        <tr>
+	        	 <td>{{cla.building}}</td>
+	        	 <td>{{cla.room}}</td>
+	        	 <td>{{cla.maxnum}}</td>
+	        	 <td>
+	        	 	 <input type="radio" name="cla" id="{{ forloop.counter }}" value="{{cla.building}}-{{cla.room}}"/>
+	        	 </td>
+	        </tr>
+	        {% endfor %}
+	     </table>
+	     -->
+	     <!--
+	     <script type="text/javascript">
+		  	 robj=document.getElementById("1");
+				 robj.checked=true;
+			 </script>
+			 -->
+    </form>
+    <script type="text/javascript">
+    	if({{begintime}}!="")
+    	{
+    		var select = document.getElementById("begintime");
+    		select.options[Number({{begintime}})-1].selected = true;
+    	}
+    	if({{endtime}}!="")
+    	{
+    		var select = document.getElementById("endtime");
+    		select.options[Number({{endtime}})-1].selected = true;
+    	}
+    </script>
+  </body>
+</html>
