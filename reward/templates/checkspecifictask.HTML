@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html>
+<head> 
+     <meta charset="utf-8">
+     <title>审核特定流程</title>
+     <script>
+     		function checkspecificmaterial(id)
+     		{
+     			var material_id=document.getElementById("material_id");
+     			material_id.value=id;
+     			var form1=document.form1;
+     			form1.submit();
+     		}
+		 </script>
+</head>
+<body>
+	<a href="/reward/materialpage/checktask/">回到审核流程主页</a>
+	<table border="1">
+    <tr>
+       <th>加分项编号</th>
+       <th>说明</th>
+       <th>申请加的绩点</th>
+       <th>申请加的公益时</th>
+       <th></th>
+    </tr>
+    {% for material in materiallist %}
+    <tr>
+    	 <td>{{ forloop.counter }}</td>
+    	 <td>{{material.description}}</td>
+    	 <td>{{material.extrascore}}</td>
+    	 <td>{{material.extrapublic}}</td>
+    	 <td><input type="button" id="{{material.materialid}}" value="进入修改" onclick="checkspecificmaterial(this.id)"></td>
+    </tr>
+    {% endfor %}
+  </table>
+	<form action="/reward/materialpage/checkspecificmaterial/" name="form1">
+   	 <input type="hidden" name="material_id" id="material_id" value="0">
+   	 <input type="hidden" name="user" id="user" value="{{user.uname}}">
+   </form>
+</body>
+</html>
