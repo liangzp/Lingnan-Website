@@ -11,6 +11,7 @@ class Task(models.Model):
     status=models.IntegerField(default=0)#数字方式表明目前到了哪一个状态，0表示没开始，1表示第一个阶段
     material_num=models.IntegerField(default=0)#记录该任务的材料数量。这个值只会增加，不会减少，以方便命名
     now_checker=models.CharField(max_length=20,default=str(None))#表明当前轮到谁审核
+    total_material=models.IntegerField(default=0)#这个用来记录
     def __str__(self):
         return self.description
 
@@ -31,5 +32,7 @@ class Opinion(models.Model):
     opinioncontent=models.CharField(max_length=100,default=str(None))#留下审核意见
     name=models.CharField(max_length=10,default=str(None))#谁留下这条Opinion，值为user的uname
     submitdate=models.CharField(max_length=100,default=str(None))#意见提交时间
+    def __str__(self):
+        return self.opinioncontent+"——"+self.name+" "+self.submitdate
 
 # Create your models here.

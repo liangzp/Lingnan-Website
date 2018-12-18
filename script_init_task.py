@@ -11,7 +11,7 @@ from reward.models import Task,Material
 userlist=User.objects.all()
 for user in userlist:
     if user.role=="student":
-        checkorder=str(['self','16332124','16332124'])
+        checkorder=str(['self','16332124','16332144'])
         checkorder_char=str(['提交材料','学委审核','学工办第一次审核'])
         task=Task(user=user,description="奖学金",checkorder=checkorder,\
                   checkorder_char=checkorder_char,status=1,now_checker='self')

@@ -1,5 +1,6 @@
 from django.shortcuts import render,HttpResponseRedirect
 from django.http import HttpResponse
+from django.utils.timezone import now
 from my_app.models import User
 from reward.models import Task
 from reward.models import Material
@@ -7,6 +8,7 @@ from reward.models import Opinion
 from django.core.files import File
 import io
 import os
+import datetime
 # Create your views here.
 def materialpage(request):
     if "username" in request.COOKIES:
@@ -129,7 +131,9 @@ def saveedition(request):
         material=Material.objects.filter(task=task).filter(materialid=materialid)[0]
         #先处理加分是否有变化       
         material.extrascore=float(request.POST['score'])
+        material.initscore=material.extrascore
         material.extrapublic=float(request.POST['public'])
+        material.initpublic=material.initpublic
         material.description=request.POST['description']
         
         #处理是否有删除已经存好的图片
@@ -212,6 +216,90 @@ def viewspecificmaterial(request):
         return HttpResponse(response)
     else:
         return HttpResponseRedirect('/my_app/login/')
+    
+def checktask(request):
+    if "username" in request.COOKIES:
+        materialid=int(request.GET.get("material_id","0"))
+        user=User.objects.filter(uname=request.COOKIES['username'])[0]
+        tasklist=Task.objects.filter(now_checker=request.COOKIES['username'])
+        '''
+        material=Material.objects.filter(task=task).filter(materialid=materialid)[0]
+        opinionlist=Opinion.objects.filter(material=material)
+        picpath=os.path.join(os.path.dirname(__file__), 'pic\\'+request.COOKIES['username']+"\\"+request.GET.get("material_id","0")).replace('\\','/')
+        piclist=os.listdir(picpath)
+        '''
+        response=render(request,"checktask.html",locals())
+        return HttpResponse(response)
+    else:
+        return HttpResponseRedirect('/my_app/login/')
+    
+def checkspecifictask(request):
+    if "username" in request.COOKIES:
+        if "username" not in request.GET:
+            return HttpResponseRedirect('/reward/materialpage/')
+        #materialid=int(request.GET.get("material_id","0"))
+        user=User.objects.filter(uname=request.GET['username'])[0]
+        task=Task.objects.filter(user=user).filter(description="奖学金")[0]
+        materiallist=Material.objects.filter(task=task)
+        response=render(request,"checkspecifictask.html",locals())
+        return HttpResponse(response)
+    else:
+        return HttpResponseRedirect('/my_app/login/')
+    
+def checkspecificmaterial(request):
+    if "username" in request.COOKIES:
+        if "material_id" not in request.GET:
+            return HttpResponseRedirect('/reward/materialpage/')
+        if "user" not in request.GET:
+            return HttpResponseRedirect('/reward/materialpage/')
+        materialid=int(request.GET.get("material_id","0"))
+        user=User.objects.filter(uname=request.GET['user'])[0]
+        task=Task.objects.filter(user=user).filter(description="奖学金")[0]
+        material=Material.objects.filter(task=task).filter(materialid=materialid)[0]
+        #opinionlist=Opinion.objects.filter(material=material).filter(name=request.COOKIES["username"])
+        opinionlist=Opinion.objects.filter(material=material)
+        opinioncontent=""
+        if len(opinionlist)>0:
+            for opinion in opinionlist:
+                if str(opinion)!="":
+                    opinioncontent=opinioncontent+str(opinion)+"\n"
+        else:
+            opinioncontent=u"无"
+        picpath=os.path.join(os.path.dirname(__file__), 'pic\\'+user.uname+"\\"+request.GET.get("material_id","0")).replace('\\','/')
+        piclist=os.listdir(picpath)
+        response=render(request,"checkspecificmaterial.html",locals())
+        return HttpResponse(response)
+    else:
+        return HttpResponseRedirect('/my_app/login/')
+    
+def savecheck(request):
+    if "username" in request.COOKIES:
+        if "materialid" not in request.POST:
+            return HttpResponseRedirect('/reward/materialpage/')
+        if "name" not in request.POST:
+            return HttpResponseRedirect('/reward/materialpage/')
+        if "score" not in request.POST:
+            return HttpResponseRedirect('/reward/materialpage/')
+        if "public" not in request.POST:
+            return HttpResponseRedirect('/reward/materialpage/')
+        if "myopinion" not in request.POST:
+            return HttpResponseRedirect('/reward/materialpage/')
+        materialid=int(request.POST.get("materialid","0"))
+        user=User.objects.filter(uname=request.POST['name'])[0]
+        task=Task.objects.filter(user=user).filter(description="奖学金")[0]
+        material=Material.objects.filter(task=task).filter(materialid=materialid)[0]
+        rightnow=now().strftime('%Y-%m-%d %H:%M:%S')
+        opinioncontent=request.POST['myopinion']
+        opinion=Opinion(material=material,opinioncontent=opinioncontent,name=request.COOKIES["username"],\
+                        submitdate=rightnow)
+        opinion.save()
+        material.extrascore=float(request.POST["score"])
+        material.extrapublic=float(request.POST["public"])
+        material.save()
+        return HttpResponseRedirect('/reward/materialpage/checkspecificmaterial/?material_id='+request.POST["materialid"]+'&user='+request.POST["name"])
+    else:
+        return HttpResponseRedirect('/my_app/login/')
+    
     
 '''
 from django.core.files import File

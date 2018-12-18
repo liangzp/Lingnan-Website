@@ -22,6 +22,10 @@ urlpatterns = [
     path('materialpage/submitdeletematerial/',views.submitdeletematerial),
     path('materialpage/viewmaterial/',views.viewmaterial),
     path('materialpage/viewspecificmaterial/',views.viewspecificmaterial),
+    path('materialpage/checktask/',views.checktask),
+    path('materialpage/checkspecifictask/',views.checkspecifictask),
+    path('materialpage/checkspecificmaterial/',views.checkspecificmaterial),
+    path('materialpage/savecheck/',views.savecheck),
     path('', views.rewardmain),
 ]
 urlpatterns +=static("pic/", document_root="reward/pic/")

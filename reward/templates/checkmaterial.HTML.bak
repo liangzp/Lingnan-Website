@@ -20,9 +20,9 @@
 		    {
 		        window.location.href="/reward/materialpage/viewmaterial/"
 		    }
-		    function checktask()
+		    function checkmaterial()
 		    {
-		        window.location.href="/reward/materialpage/checktask/"
+		        window.location.href="/reward/materialpage/checkmaterial/"
 		    }
 		 </script>
 </head>
@@ -31,8 +31,8 @@
 	<input type="button" value="提交新加分项的材料" id="addnew" onclick="submitnewmaterial()" ><br>
 	<input type="button" value="编辑已有加分项材料" id="edit" onclick="editmaterial()"><br>
 	<input type="button" value="删除加分项" id="deleteexist" onclick="deletematerial()"><br>
-	<input type="button" value="我的审核任务" id="viewmaterial" onclick="checktask()"><br>
-	<input type="button" value="查看审核结果" id="viewmaterial" onclick="viewmaterial()" hidden>	
+	<input type="button" value="查看审核结果" id="viewmaterial" onclick="viewmaterial()" hidden>
+	<input type="button" value="我的审核任务" id="viewmaterial" onclick="checkmaterial()" hidden>
 	<div id="textcontent" hidden>
     提交时间已截止，你已经不能上传/修改/删除材料</br>
   </div>
