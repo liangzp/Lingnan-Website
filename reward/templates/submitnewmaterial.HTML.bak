@@ -1,0 +1,103 @@
+<!DOCTYPE HTML>
+<html>
+<head> 
+     <meta charset="utf-8">
+     <title>添加新加分项</title>
+     <script>
+		    function changepic(parent_id,input_id)
+		    {
+		        //alert("get");
+		        /*
+		        var reads= new FileReader();
+		        f=document.getElementById('fileField').files[0];
+		        reads.readAsDataURL(f);
+		        reads.onload=function (e) {
+		            document.getElementById('show').src=this.result;
+		        };*/
+		        var count_pic=document.getElementById("count_picture");
+		        var max_id=document.getElementById("max_id");
+		        if(Number(count_pic.value)>=5)
+		        {
+		        	alert("加载图片超过五张");
+		        	return;
+		        }
+		        if(("file"+max_id.value)!=input_id)
+		        {
+		        	alert("file"+max_id.value);
+		        	return;
+						}			
+		        var parentele=document.getElementById(parent_id);
+		        
+  	        var old_div=document.getElementById("div"+input_id[input_id.length-1]);
+		        var delBtn=document.createElement("input");//再创建一个用于删除input file的Button  
+					  delBtn.type="button";  
+					  delBtn.value="删除";  
+					  delBtn.onclick=function(){ removeInput(parent_id,input_id)};//为button设置onclick方法
+					  old_div.appendChild(delBtn);
+		        
+		        var new_div=document.createElement("div");
+		        new_div.name="div"+(Number(max_id.value)+1);
+		        new_div.id="div"+(Number(max_id.value)+1);
+		        var aElement=document.createElement("input"); //创建input  
+						aElement.name="file"+(Number(max_id.value)+1);  
+						aElement.id="file"+(Number(max_id.value)+1);  
+						aElement.type="file";//设置类型为file 
+						aElement.accept="image/png, image/jpeg, image/gif, image/jpg"
+						new_div.appendChild(aElement);
+						parentele.appendChild(new_div);
+						aElement.onchange=function(){ changepic('form1',aElement.id)};
+						
+						var count_pic=document.getElementById("count_picture");
+					  count_pic.value=Number(count_pic.value)+1;
+					  
+					  max_id.value=Number(max_id.value)+1;
+		    }
+		    function removeInput(parentID,input_id)
+		    {
+		    	var parent=document.getElementById(parentID);
+		    	var num=input_id.replace(/[^0-9]/ig,"");
+		    	var old_div=document.getElementById("div"+num);
+					parent.removeChild(old_div);
+					var count_pic=document.getElementById("count_picture");
+					count_pic.value=Number(count_pic.value)-1;
+		    }
+		    function submitform()
+		    {
+		    	var reg = new RegExp("^(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*))$");//<!-- /^\d+(\.\d+)?$/  浮点数表达式-->
+		    	var scorevalue=document.getElementById("public").value
+		    	if(!reg.test(scorevalue)&&(Number(scorevalue)!=0))
+		    	{
+		    		alert("绩点输入不合要求");
+		    		return;
+		    	}
+		    	reg =new RegExp("[0-9]+")
+		    	regfloat=new RegExp("^(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*))$");
+		    	var publicvalue=document.getElementById("public").value
+		    	if(!reg.test(publicvalue)&&(publicvalue!="0")&&!regfloat.test(publicvalue))
+		    	{
+		    		alert("公益时输入不合要求");
+		    		return;
+		    	}
+		    	form1=document.getElementById("form1");
+		    	//form1.action="/reward/materialpage/savematerial/";
+		    	form1.submit();
+		    }
+		 </script>
+</head>
+<body>
+	<form action="/reward/materialpage/savematerial/" method="POST" enctype="multipart/form-data" id="form1" name="form1">	
+		{% csrf_token %} 
+		<input type="button" value="上传" onclick="submitform()"/><br> <!-- /^\d+(\.\d+)?$/  浮点数表达式-->
+		<input type="hidden" value="0" id="count_picture" name="count_picture">
+		<input type="hidden" value="1" id="max_id" name="max_id">
+		该材料加绩点：<input type="text" name="score" id="score" /> <br>
+		该材料加公益时：<input type="text" name="public" id="public" /><br>
+		简单描述该材料：<input type="text" name="description" id="description" style="width:300px; height:60px;"/><br>
+		上传材料截图（一次性最多上传5张）：<br>
+		<div name="div1" id="div1">
+	  	<input type="file" onchange="changepic('form1',this.id)" name="file1"  id="file1" accept="image/png, image/jpeg, image/gif, image/jpg"/>	
+	  </div>
+	  <!--<img src="" id="show" width="200">	-->				
+	</form>
+</body>
+</html>

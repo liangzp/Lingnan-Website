@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html>
+<head> 
+     <meta charset="utf-8">
+     <title>处理个人加分材料页</title>
+     <script>
+		    function submitnewmaterial()
+		    {
+		        window.location.href="/reward/materialpage/submitnewmaterial/";
+		    }
+		    function editmaterial()
+		    {
+		        window.location.href="/reward/materialpage/editmaterial/";
+		    }
+		    function deletematerial()
+		    {
+		        window.location.href="/reward/materialpage/deletematerial/"
+		    }
+		    function viewmaterial()
+		    {
+		        window.location.href="/reward/materialpage/deletematerial/"
+		    }
+		 </script>
+</head>
+<body>
+	本学期的奖学金申请，你已经提交了{{num_addscore}}项加分项,你可以选择：<br>
+	<input type="button" value="提交新加分项的材料" id="addnew" onclick="submitnewmaterial()" ><br>
+	<input type="button" value="编辑已有加分项材料" id="edit" onclick="editmaterial()"><br>
+	<input type="button" value="删除加分项" id="deleteexist" onclick="deletematerial()"><br>
+	<input type="button" value="查看审核结果" id="viewmaterial" onclick="viewmaterial()" hidden>
+	<div id="textcontent" hidden>
+    提交时间已截止，你已经不能上传/修改/删除材料</br>
+  </div>
+	<a href="/my_app/managestu/">返回主界面</a>
+	
+	<script>
+		if("{{changematerial}}"=="True")
+		{
+    	document.getElementById("addnew").disabled=true;
+    	document.getElementById("edit").disabled=true;
+    	document.getElementById("deleteexist").disabled=true;
+    	document.getElementById("textcontent").hidden=false;
+    	document.getElementById("viewmaterial").hidden=false;
+    }
+	</script>
+	
+</body>
+</html>

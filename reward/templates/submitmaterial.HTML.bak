@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html>
+<head> 
+     <meta charset="utf-8">
+     <title>submit material html</title>
+     <script>
+		    function changepic()
+		    {
+		        //alert("get");
+		        var reads= new FileReader();
+		        f=document.getElementById('fileField').files[0];
+		        reads.readAsDataURL(f);
+		        reads.onload=function (e) {
+		            document.getElementById('show').src=this.result;
+		        };
+		    }
+		 </script>
+</head>
+<body>
+	<!-- 通过将 form 的 target 指向 iframe 的 name 来实现无刷新上传 -->
+	本学期的奖学金申请，你已经提交了{{num_addscore}}项加分项,你可以选择：
+	<from action="">
+		<input type="button" value="提交新材料" onclick="submitnewmaterial">
+		<input type="button" value="编辑已有材料" onclick="editmaterial">
+		<input type="button" value="删除加分项" onclick="deletematerial">
+	</form>
+	<!--
+	<form action="/reward/savematerial/" method="POST" enctype="multipart/form-data">	
+		{% csrf_token %}        
+	  <input type="file" onchange="changepic(this)" name="fileField"  id="fileField" />	
+	  <img src="" id="show" width="200">					
+		<input type="submit" class="btn" value="上传" />
+	</form>
+	<script>
+    function changepic()
+    {
+        //alert("get");
+        var reads= new FileReader();
+        f=document.getElementById('fileField').files[0];
+        reads.readAsDataURL(f);
+        reads.onload=function (e) {
+            document.getElementById('show').src=this.result;
+        };
+    }
+	</script>
+	-->
+</body>

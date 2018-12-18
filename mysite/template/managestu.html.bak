@@ -1,13 +1,103 @@
+
 <!DOCTYPE HTML>
-<html>
-<head> 
-     <meta charset="utf-8">
-     <title>manage html</title>
-</head>
-<body>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>中山大学岭南（大学）学院教务系统</title>
+  <link rel='stylesheet' href='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css'>	
+	    <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="lingnan.css" media="all" />
+	</head>
+
+<style type='text/css'>
+#header .header-body{
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url(http://lingnan.sysu.edu.cn/profiles/custom/sysu/modules/sysu_manage/images/lingnan/header-bg.png);
+    background-size: cover;
+    min-height: 158px;
+    max-width: 9000px;
+    padding: 0px;
+}
+
+</style>
+
+<div id="header" class="header-bg-primary">
+<div class="header-body">
+      <div class="header-container header-top inner ">
+        <div class="header-row">
+          <!-- logo -->
+		  
+          <div class="header-column">
+            <div id="site-logo" class="header-logo">
+              <a href="/"><img src="http://lingnan.sysu.edu.cn/sites/lingnan.prod.dpweb3.sysu.edu.cn/files/logo_1_0.png"/></a>
+            </div>
+          </div>
+          
+		 </div>
+		 </div>
+		 </div>
+		 
+	</div>
+
+
+	<div class="container-fluid">
+	
+	<div class="row-fluid">
+	
+	
+	<div class="col-md-3">
+		<div class="span2">
+			<ul class="nav nav-list">
+				
+				<li class="active">
+					<a href="/my_app/login/">首页</a>
+				</li>
+				
+				<li class="active">
+					<a href="/my_app/applypage">申请教室</a>
+				</li>
+				
+				<li>
+					<a href="/login.index">提交奖学金材料</a>
+				</li>
+				<li class="divider">
+				</li>
+			</ul>
+		</div>
+	</div>
+	
+	 <div class="col-md-6" >
+	 	<h3>
      <p>欢迎回来，{{user}}!</p>
      <p>{{info}}</p>
      <p>{{intro}}</p>
-     <a href="/my_app/applypage/">前往申请课室</a>
-     <a href="/my_app/checkapplication/">检查申请是否通过</a>
-</body>
+	</h3>
+	 
+		</div>
+		
+		
+		<div class="col-md-3">
+		<div class="span4">
+		
+			<h2>
+				标题
+			</h2>
+			
+			<p>
+				本可视化布局程序在HTML5浏览器上运行更加完美, 能实现自动本地化保存, 即使关闭了网页, 下一次打开仍然能恢复上一次的操作.
+			</p>
+			<p>
+				<a class="btn" href="#">查看更多 ?</a>
+			</p>
+		</div>
+		</div>
+	</div>
+	</div>
+</div>
+
+ 
+  </body>
+ </html>

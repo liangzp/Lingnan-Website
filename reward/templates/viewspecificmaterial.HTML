@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html>
+<head> 
+     <meta charset="utf-8">
+     <title>查看已提交的材料</title>
+     <script>
+		    
+		 </script>
+</head>
+<body>
+		<a href="/reward/materialpage/viewmaterial/">返回查看材料主页</a><br>
+		该材料加绩点：<input type="text" name="score" id="score" value="{{material.extrascore}}" disabled/><br>
+		该材料加公益时：<input type="text" name="public" id="public" value="{{material.extrapublic}}" disabled/><br>
+		该材料的描述：<input type="text" name="description" id="description" style="width:300px; height:60px;" value="{{material.description}}" disabled /><br>
+		<div id="div_exist_parent" name="div_exist_parent"><!--用来展示已有的图片--><!--这里的pic文件名都是带后缀的-->
+			 {% for pic in piclist %}
+			    <div id="div_exist{{pic}}" name="div_exist{{pic}}">
+			    	<img src="/reward/pic/{{user.uname}}/{{materialid}}/{{pic}}" id="show" width="200" id="src_exist{{pic}}" name="src_exist{{pic}}" >
+			    	<input type="hidden" id="text{{pic}}" name="text{{pic}}" value="{{pic}}">
+			    </div>
+			 {% endfor %}
+	  </div>
+	  审核人意见:<br>
+	  <table border="1" name="opinionlist">
+    <tr>
+       <th>审核人</th>
+       <th>该意见提交时间</th>
+       <th>意见内容</th>
+    </tr>
+    {% for opinion in opinionlist %}
+    <tr>
+    	 <td>{{opinion.name}}</td>
+    	 <td>{{opinion.submitdate}}</td>
+    	 <td>{{material.opinioncontent}}</td>
+    </tr>
+	  {% endfor %}
+</body>
+</html>
