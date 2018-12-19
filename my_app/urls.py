@@ -18,6 +18,8 @@ urlpatterns = [
     path(r'logout/', views.logout),
     path(r'updatestatus/', views.updatestatus),
     path(r'applyselclassroom/', views.applyselclassroom),
+    path(r'editpassword/', views.editpassword),
+    path(r'submitnewpwd/', views.submitnewpwd),
 ]
 
 

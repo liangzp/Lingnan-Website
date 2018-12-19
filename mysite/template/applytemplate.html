@@ -300,39 +300,16 @@
 	<div class="form-group">
       申请日期：<input type="date" id="date" name="date" value={{date}} min="{{mindate}}" max="{{maxdate}}" required />
 	  <span class="help-block">只能申请未来7天的课室</span>
-	
 	</div>
 
 	<div class="form-group">	
-      活动人数：<input type="text" id="maxnum" name="maxnum" required pattern="[0-9]+" value="{{maxnum}}"  /><br>
+      活动人数：<input type="text" id="maxnum" name="maxnum" required pattern="[0-9]+" value="{{maxnum}}"  /></div><br>
+      
+  <div class="form-group">
+      邮箱：<input type="text" id="mailbox" name="mailbox" value="{{mailbox}}" required />
+	  <span class="help-block">申请被审核后会发邮件到这个邮箱通知你</span>
+	</div>
       <input  class="btn btn-default" type="button" value="提交" onclick="submitapply()" /><br>   
-	    <!--
-	    可用课室列表如下：
-			<table border="2">
-	        <tr>
-	        	 <th>建筑物</th>
-	           <th>课室编号</th>
-	           <th>课室最大容量</th>
-	           <th>选择</th>
-	        </tr>
-	        {% for cla in classlist %}
-	        <tr>
-	        	 <td>{{cla.building}}</td>
-	        	 <td>{{cla.room}}</td>
-	        	 <td>{{cla.maxnum}}</td>
-	        	 <td>
-	        	 	 <input type="radio" name="cla" id="{{ forloop.counter }}" value="{{cla.building}}-{{cla.room}}"/>
-	        	 </td>
-	        </tr>
-	        {% endfor %}
-	     </table>
-	     -->
-	     <!--
-	     <script type="text/javascript">
-		  	 robj=document.getElementById("1");
-				 robj.checked=true;
-			 </script>
-			 -->
     </form>
     <script type="text/javascript">
     	if({{begintime}}!="")

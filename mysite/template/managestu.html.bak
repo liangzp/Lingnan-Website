@@ -63,9 +63,11 @@
 				<li>
 					<a href="/reward/materialpage/">奖学金相关事务</a>
 				</li>
+				<!--
 				<li>
 					<a href="/reward/materialpage/checkmaterialpage/">查看自己的审核任务</a>
 				</li>
+				-->
 				<li class="divider">
 				</li>
 			</ul>

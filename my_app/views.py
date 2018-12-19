@@ -9,6 +9,8 @@ from my_app.models import Classroom
 import datetime
 import numpy as np
 import io
+import smtplib
+from email.mime.text import MIMEText
 # Create your views here.
 
 def testtemplate(request):
@@ -104,29 +106,11 @@ def applypage(request):
             begintime=request.GET.get('begintime',"")
             endtime=request.GET.get('endtime',"")
             applist=Application.objects.filter(name=request.COOKIES['username'])
+            mailbox=request.GET.get('mailbox','')
             if len(applist)>10:
                 applist=applist[:10]
             if date=="":
-                date=(now()+datetime.timedelta(days=1)).strftime('%Y-%m-%d')
-            '''
-            if date=="":
-                date=(now()+datetime.timedelta(days=1)).strftime('%Y-%m-%d')
-            if date!="" and maxnum!="":
-                classlistall=Classroom.objects.filter(maxnum__gte=int(maxnum)).filter(date=date)
-                classlist=[]
-                for i in range(len(classlistall)):
-                    find=True
-                    avaltime=eval(classlistall[i].status)
-                    for j in range(int(begintime)-1,int(endtime),1):
-                        if avaltime[j]==0:
-                            find=False
-                            break
-                    if find==True:
-                        classlist.append(classlistall[i])
-            else:
-                classlistall=[]
-                classlist=[]
-            '''        
+                date=(now()+datetime.timedelta(days=1)).strftime('%Y-%m-%d')       
             mindate=(now()+datetime.timedelta(days=1)).strftime('%Y-%m-%d')
             maxdate=(now()+datetime.timedelta(days=7)).strftime('%Y-%m-%d')
             response=render(request, 'applytemplate.html',locals())
@@ -137,7 +121,6 @@ def applypage(request):
         return HttpResponseRedirect('/my_app/login')
 
 def applysuccess(request):
-    
     if "username" in request.COOKIES:
         user=request.COOKIES['username']
         if User.objects.filter(uname=user)[0].role=="student":
@@ -148,10 +131,11 @@ def applysuccess(request):
             begintime=request.GET.get('begintime',None)
             endtime=request.GET.get('endtime',None)
             cla=request.GET.get('cla',None)
+            mailbox=request.GET.get('mailbox',None)
             application=Application(name=user,phonenumber=phonenumber,date=date,maxnum=maxnum,\
                                     status="待审核",submittime=now().strftime('%Y-%m-%d %H:%M:%S'),\
                                     activity=activity,begintime=begintime,endtime=endtime,\
-                                    classroom=cla)
+                                    classroom=cla,mailbox=mailbox)
             application.save()
             response=render(request, 'applysuccess.html')
             return response
@@ -159,14 +143,6 @@ def applysuccess(request):
             return HttpResponseRedirect('/my_app/login')
     else:
         return HttpResponseRedirect('/my_app/login')
-    
-    '''
-    response=HttpResponse()
-    for key in request.GET.keys():
-        response.write(key+':')
-        response.write(request.GET[key]+'<br>')
-    return response
-    '''
     
 def checkapplication(request):
     if "username" in request.COOKIES:
@@ -232,10 +208,48 @@ def updatestatus(request):#这里相当于是用未被审核列表里面传递�
             cla.status=str(aval)
             cla.save()
             app.save()
+            #发送邮件
+            content=app.name+",你好。你对"+app.date+"下第"+str(app.begintime)+"节课到第"+str(app.endtime)+"节课"+\
+                    app.classroom+"的使用权申请已通过，祝好！\n此为通知邮件，请勿回复。"
+            mail_host = "smtp.163.com"  # SMTP服务器
+            mail_user = u"infosystemg10@163.com"  # 用户名
+            mail_pass = "2018lnxyxgb"  # 密码
+            sender = 'infosystemg10@163.com'  
+            receivers = ["infosystemg10@163.com",app.mailbox]
+            title = '课室申请通过'  # 邮件主题
+            message = MIMEText(content, 'plain', 'utf-8')  # 内容, 格式, 编码
+            message['From'] = "{}".format(sender)
+            #message['From']=u"管理信息系统第十小组"+"<"+sender+">"
+            message['To'] = ",".join(receivers)
+            message['Subject'] = title
+            try:
+                smtpObj = smtplib.SMTP_SSL(mail_host, 465)  # 启用SSL发信, 端口一般是465
+                smtpObj.login(mail_user, mail_pass)  # 登录验证
+                smtpObj.sendmail(sender, receivers, message.as_string())  # 发送
+            except:
+                pass
         elif info=="no":
             app.status=u"被拒绝"
             app.feedback=request.GET.get(str(index)+"opinion",None)
             app.save()
+            content=app.name+",你好。你对"+app.date+"下第"+str(app.begintime)+"节课到第"+str(app.endtime)+"节课"+\
+                    app.classroom+"的使用权申请未通过，反馈意见为\n"+app.feedback+"\n此为通知邮件，请勿回复。"
+            mail_host = "smtp.163.com"  # SMTP服务器
+            mail_user = u"infosystemg10@163.com"  # 用户名
+            mail_pass = "2018lnxyxgb"  # 密码
+            sender = 'infosystemg10@163.com'  
+            receivers = ["infosystemg10@163.com",app.mailbox]
+            title = '课室申请未通过'  # 邮件主题
+            message = MIMEText(content, 'plain', 'utf-8')  # 内容, 格式, 编码
+            message['From'] = "{}".format(sender)
+            message['To'] = ",".join(receivers)
+            message['Subject'] = title
+            try:
+                smtpObj = smtplib.SMTP_SSL(mail_host, 465)  # 启用SSL发信, 端口一般是465
+                smtpObj.login(mail_user, mail_pass)  # 登录验证
+                smtpObj.sendmail(sender, receivers, message.as_string())  # 发送
+            except:
+                pass
         else:
             continue            
     return HttpResponseRedirect('/my_app/permitapplication')
@@ -251,6 +265,7 @@ def applyselclassroom(request):
             activity=request.GET.get('activity',None)
             begintime=int(request.GET.get('begintime',None))
             endtime=int(request.GET.get('endtime',None))
+            mailbox=request.GET.get("mailbox", None)
             classlist=Classroom.objects.filter(maxnum__gte=maxnum).filter(date=date)
             #datetime.datetime.strptime(date,"%Y-%m-%d")
             #如果是星期日，会返回6，即-1     
@@ -268,6 +283,26 @@ def applyselclassroom(request):
             return response
         else:
             return HttpResponseRedirect('/my_app/login')
+    else:
+        return HttpResponseRedirect('/my_app/login')
+    
+def editpassword(request):
+    if "username" in request.COOKIES:
+        response=render(request, 'editpassword.html')
+        return HttpResponse(response)
+    else:
+        return HttpResponseRedirect('/my_app/login')
+    
+def submitnewpwd(request):
+    if "username" in request.COOKIES:
+        if "password1" not in request.POST:
+            return HttpResponseRedirect('/my_app/login')
+        user=User.objects.filter(uname=request.COOKIES['username'])[0]
+        user.pwd=request.POST['password1']
+        user.save()
+        response=HttpResponse()
+        response.write("<script>alert('提交成功');window.location.href='/my_app/managestu/';</script>")
+        return response
     else:
         return HttpResponseRedirect('/my_app/login')
     

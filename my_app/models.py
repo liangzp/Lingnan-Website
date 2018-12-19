@@ -22,6 +22,7 @@ class Application(models.Model):#申请课室的数据类
     submittime=models.CharField(max_length=10,default=str(None))
     feedback=models.CharField(max_length=100,default=str(None))
     classroom=models.CharField(max_length=20,default=str(None))
+    mailbox=models.CharField(max_length=40,default=str(None))#发邮件
     def __str__(self):
         text=self.name+u'想在'+self.date+u'申请一个课室，人数为'+str(self.maxnum)+u',要做的事：'+self.activity
         return text
@@ -31,7 +32,7 @@ class Classroom(models.Model):#申请课室的数据类
     dayofweek=models.IntegerField(default=4)#周一到周日,即1-7
     date=models.CharField(max_length=20,default="2018-12-13")#表示哪个日期例如2018-12-13
     room=models.CharField(max_length=20)#在建筑物的哪个房间
-    status=models.CharField(max_length=200,default=u"[1,1,1,1,1,1,1,1,1,1,1]")#1闲置，
+    status=models.CharField(max_length=200,default=u"[1,1,1,1,1,1,1,1,1,1,1,1]")#1闲置，
     maxnum=models.IntegerField()#课室容量是多少
     #存储在某一天的某一个课室哪些时段是能被申请的,默认一天10个时段都能申请
     def __str__(self):
