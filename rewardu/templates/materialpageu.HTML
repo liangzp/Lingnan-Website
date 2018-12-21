@@ -4,13 +4,21 @@
      <meta charset="utf-8">
      <title>处理个人加分材料页</title>
      <script>
-		    function submitnewmaterial()
+		    function submitnewmaterialscore()
 		    {
-		        window.location.href="/rewardu/materialpage/submitnewmaterial/";
+		        window.location.href="/rewardu/materialpage/submitnewmaterialscore/";
 		    }
-		    function editmaterial()
+		    function submitnewmaterialpublic()
 		    {
-		        window.location.href="/rewardu/materialpage/editmaterial/";
+		        window.location.href="/rewardu/materialpage/submitnewmaterialpublic/";
+		    }
+		    function editmaterialscore()
+		    {
+		        window.location.href="/rewardu/materialpage/editmaterialscore/";
+		    }
+		    function editmaterialpublic()
+		    {
+		        window.location.href="/rewardu/materialpage/editmaterialpublic/";
 		    }
 		    function deletematerial()
 		    {
@@ -29,8 +37,10 @@
 <body>
 	<p>校级奖学金评选</p><br>
 	本学期的奖学金申请，你已经提交了{{num_addscore}}项加分项,你可以选择：<br>
-	<input type="button" value="提交新加分项的材料" id="addnew" onclick="submitnewmaterial()" ><br>
-	<input type="button" value="编辑已有加分项材料" id="edit" onclick="editmaterial()"><br>
+	<input type="button" value="提交绩点加分项的材料" id="addnewscore" onclick="submitnewmaterialscore()" >
+	<input type="button" value="编辑绩点已有加分项材料" id="editscore" onclick="editmaterialscore()"><br>
+	<input type="button" value="提交公益时加分项的材料" id="addnewpublic" onclick="submitnewmaterialpublic()" >
+	<input type="button" value="编辑公益时已有加分材料" id="editpublic" onclick="editmaterialpublic()"><br>
 	<input type="button" value="删除加分项" id="deleteexist" onclick="deletematerial()"><br>
 	<input type="button" value="我的审核任务" id="mycheck" onclick="checktask()"><br>
 	<input type="button" value="查看审核结果" id="viewmaterial" onclick="viewmaterial()" hidden>	
@@ -42,8 +52,10 @@
 	<script>
 		if("{{changematerial}}"=="True")
 		{
-    	document.getElementById("addnew").disabled=true;
-    	document.getElementById("edit").disabled=true;
+    	document.getElementById("addnewscore").disabled=true;
+    	document.getElementById("addnewpublic").disabled=true;
+    	document.getElementById("editscore").disabled=true;
+    	document.getElementById("editpublic").disabled=true;
     	document.getElementById("deleteexist").disabled=true;
     	document.getElementById("textcontent").hidden=false;
     	document.getElementById("viewmaterial").hidden=false;

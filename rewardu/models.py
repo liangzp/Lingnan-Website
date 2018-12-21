@@ -29,6 +29,8 @@ class Materialu(models.Model):#一个加分项对应多张图片
     fromtime=models.CharField(max_length=20,default=str(None))#该活动的开始时间，只需月份即可
     totime=models.CharField(max_length=20,default=str(None))#该活动的结束时间，只需月份即可
     kind=models.CharField(max_length=20,default=str(None))#该活动的结束时间，只需月份即可
+    
+    destype=models.CharField(max_length=20,default=str(None))#该材料的描述，这里用于区分校级奖学金的绩点和公益时材料
     def __str__(self):
         return self.description+"加分是"
 

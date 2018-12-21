@@ -21,12 +21,41 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '419!=2ek^gp2-v(zeil_s7j6jn)a37mynr843a#flln1j#bkx$'
-
+#yablvestjhbfbdac
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
+#EMAIL_HOST_PASSWORD ="yablvestjhbfbdac"
 ALLOWED_HOSTS = ['*',]
-
+'''
+EMAIL_HOST = 'smtp.qq.com'
+EMAIL_PORT = 25
+EMAIL_HOST_USER = '8700051555@qq.com' # 你的邮箱账号
+EMAIL_HOST_PASSWORD = 'xphbaurlfnaibebj' # 这里是邮箱提供给的授权码，不是个人密码
+EMAIL_USE_TLS = True  # 保持不变
+EMAIL_FROM = '8700051555@qq.com' # 你的邮箱账号
+'''
+'''
+EMAIL_HOST = 'smtp.qq.com'
+EMAIL_PORT = 25
+EMAIL_HOST_USER = 'xxx@qq.com' # 你的 QQ 账号
+EMAIL_HOST_PASSWORD = '刚刚复制的授权码（不是你的 QQ 密码！！！）'
+EMAIL_USE_TLS = True # 这里必须是 True，否则发送不成功
+EMAIL_FROM = 'xxx@qq.com' # 你的 QQ 账号
+'''
+# 发送邮件设置
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# SMTP地址
+EMAIL_HOST = 'smtp.qq.com'
+# SMTP端口
+EMAIL_PORT = 25
+# 自己的邮箱
+EMAIL_HOST_USER = '870051555@qq.com'
+# 自己的邮箱授权码，非密码
+EMAIL_HOST_PASSWORD = 'xphbaurlfnaibebj'
+#EMAIL_SUBJECT_PREFIX = '[黄文杨的博客]'
+EMAIL_USE_TLS=True
+DEFAULT_FROM_EMAIL= EMAIL_HOST_USER
+# 与SMTP服务器通信时，是否启动TLS链接(安全链接)。默认是false
 
 # Application definition
 

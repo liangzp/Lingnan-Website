@@ -29,25 +29,47 @@ def materialpage(request):
     else:
         return HttpResponseRedirect('/my_app/login')
 
-def submitnewmaterial(request):
+def submitnewmaterialscore(request):
     if "username" in request.COOKIES:
         savepath=os.path.join(os.path.dirname(__file__), 'pic\\'+request.COOKIES['username']).replace('\\','/')
         if os.path.exists(savepath) ==False:
             os.makedirs(savepath)
         #savepath的路径是创建了每一个人的总文件夹，这个文件夹下只有文件夹下只有文件夹，没有文件
         #os.listdir是获得文件夹下文件夹+文件的数目
-        response=render(request, 'submitnewmaterialu.HTML')        
+        response=render(request, 'submitnewmaterialuscore.HTML')        
         return HttpResponse(response)
     else:
         return HttpResponseRedirect('/my_app/login')
     
-def editmaterial(request):
+def submitnewmaterialpublic(request):
+    if "username" in request.COOKIES:
+        savepath=os.path.join(os.path.dirname(__file__), 'pic\\'+request.COOKIES['username']).replace('\\','/')
+        if os.path.exists(savepath) ==False:
+            os.makedirs(savepath)
+        #savepath的路径是创建了每一个人的总文件夹，这个文件夹下只有文件夹下只有文件夹，没有文件
+        #os.listdir是获得文件夹下文件夹+文件的数目
+        response=render(request, 'submitnewmaterialupublic.HTML')        
+        return HttpResponse(response)
+    else:
+        return HttpResponseRedirect('/my_app/login')
+    
+def editmaterialscore(request):
     if "username" in request.COOKIES:
         user=User.objects.filter(uname=request.COOKIES['username'])[0]
         task=Tasku.objects.filter(user=user).filter(description="校级奖学金")[0]
-        materiallist=Materialu.objects.filter(task=task)
+        materiallist=Materialu.objects.filter(task=task).filter(destype="绩点")
         
-        response=render(request, 'editmaterialu.HTML',locals())        
+        response=render(request, 'editmaterialuscore.HTML',locals())        
+        return HttpResponse(response)
+    else:
+        return HttpResponseRedirect('/my_app/login')
+    
+def editmaterialpublic(request):
+    if "username" in request.COOKIES:
+        user=User.objects.filter(uname=request.COOKIES['username'])[0]
+        task=Tasku.objects.filter(user=user).filter(description="校级奖学金")[0]
+        materiallist=Materialu.objects.filter(task=task).filter(destype="公益时")
+        response=render(request, 'editmaterialupublic.HTML',locals())        
         return HttpResponse(response)
     else:
         return HttpResponseRedirect('/my_app/login')
@@ -63,7 +85,7 @@ def deletematerial(request):
     else:
         return HttpResponseRedirect('/my_app/login')
 
-def savematerial(request):
+def savematerialscore(request):
     if "username" in request.COOKIES:
         if request.method != 'POST':
             return HttpResponseRedirect('/rewardu/materialpage/')
@@ -95,12 +117,53 @@ def savematerial(request):
         material=Materialu(task=task,extrascore=float(score),initscore=float(score),\
                           extrapublic=float(public),initpublic=float(public),description=description,\
                           materialid=foldnum+1,num_pic=i,level=level,fromtime=fromtime,\
-                          totime=totime,kind=kind)
+                          totime=totime,kind=kind,destype="绩点")
         task.material_num=task.material_num+1
         task.total_material=task.total_material+1
         material.save()
         task.save()
-        return HttpResponseRedirect('/rewardu/materialpage/editspecificmaterial/')
+        return HttpResponseRedirect('/rewardu/materialpage/')
+    else:
+        return HttpResponseRedirect('/my_app/login/')
+    
+def savematerialpublic(request):
+    if "username" in request.COOKIES:
+        if request.method != 'POST':
+            return HttpResponseRedirect('/rewardu/materialpage/')
+        description=request.POST.get("description","")
+        score=request.POST.get("score","")
+        public=request.POST.get("public","")
+        
+        level=request.POST.get("level","")
+        fromtime=request.POST.get("fromtime","")
+        totime=request.POST.get("totime","")
+        kind=request.POST.get("kind","")
+        
+        user=User.objects.filter(uname=request.COOKIES['username'])[0]
+        task=Tasku.objects.filter(user=user).filter(description="校级奖学金")[0]
+        
+        savepath=os.path.join(os.path.dirname(__file__), 'pic\\'+request.COOKIES['username']).replace('\\','/')
+        foldnum=task.material_num
+        savepath=savepath+"/"+str(foldnum+1)
+        os.makedirs(savepath)
+        i=0
+        for key in request.FILES.keys():
+            i=i+1
+            file=request.FILES[key]
+            file_suffix=file.name.split(".")[-1]
+            with open(savepath+"/"+str(i)+"."+file_suffix,'wb') as fp:
+                for part in file.chunks():
+                    fp.write(part)
+                       
+        material=Materialu(task=task,extrascore=float(score),initscore=float(score),\
+                          extrapublic=float(public),initpublic=float(public),description=description,\
+                          materialid=foldnum+1,num_pic=i,level=level,fromtime=fromtime,\
+                          totime=totime,kind=kind,destype="公益时")
+        task.material_num=task.material_num+1
+        task.total_material=task.total_material+1
+        material.save()
+        task.save()
+        return HttpResponseRedirect('/rewardu/materialpage/')
     else:
         return HttpResponseRedirect('/my_app/login/')
     
@@ -110,7 +173,7 @@ def rewardmain(request):
         return response
     else:
         return HttpResponseRedirect('/my_app/login/')
-    
+'''   
 def editspecificmaterial(request):
     if "username" in request.COOKIES:
         if "material_id" not in request.GET:
@@ -123,11 +186,46 @@ def editspecificmaterial(request):
         piclist=os.listdir(picpath)
         #for i in range(len(piclist)):#把获得文件名的后缀去掉
         #    piclist[i]=piclist[i].split(".")[0]
-        response=render(request,"editspecificmaterialu.html",locals())
+        response=render(request,"editspecificmaterialuscore.html",locals())
         return HttpResponse(response)
     else:
         return HttpResponseRedirect('/my_app/login/')
+'''
     
+def editspecificmaterialpublic(request):
+    if "username" in request.COOKIES:
+        if "material_id" not in request.GET:
+            return HttpResponseRedirect('/rewardu/materialpage/')
+        materialid=int(request.GET.get("material_id","0"))
+        user=User.objects.filter(uname=request.COOKIES['username'])[0]
+        task=Tasku.objects.filter(user=user).filter(description="校级奖学金")[0]
+        material=Materialu.objects.filter(task=task).filter(materialid=materialid)[0]
+        picpath=os.path.join(os.path.dirname(__file__), 'pic\\'+request.COOKIES['username']+"\\"+request.GET.get("material_id","0")).replace('\\','/')
+        piclist=os.listdir(picpath)
+        #for i in range(len(piclist)):#把获得文件名的后缀去掉
+        #    piclist[i]=piclist[i].split(".")[0]
+        response=render(request,"editspecificmaterialupublic.html",locals())
+        return HttpResponse(response)
+    else:
+        return HttpResponseRedirect('/my_app/login/')
+
+def editspecificmaterialscore(request):
+    if "username" in request.COOKIES:
+        if "material_id" not in request.GET:
+            return HttpResponseRedirect('/rewardu/materialpage/')
+        materialid=int(request.GET.get("material_id","0"))
+        user=User.objects.filter(uname=request.COOKIES['username'])[0]
+        task=Tasku.objects.filter(user=user).filter(description="校级奖学金")[0]
+        material=Materialu.objects.filter(task=task).filter(materialid=materialid)[0]
+        picpath=os.path.join(os.path.dirname(__file__), 'pic\\'+request.COOKIES['username']+"\\"+request.GET.get("material_id","0")).replace('\\','/')
+        piclist=os.listdir(picpath)
+        #for i in range(len(piclist)):#把获得文件名的后缀去掉
+        #    piclist[i]=piclist[i].split(".")[0]
+        response=render(request,"editspecificmaterialuscore.html",locals())
+        return HttpResponse(response)
+    else:
+        return HttpResponseRedirect('/my_app/login/')
+
 def saveedition(request):
     if "username" in request.COOKIES:
         if "materialid" not in request.POST:
@@ -140,7 +238,7 @@ def saveedition(request):
         material.extrascore=float(request.POST['score'])
         material.initscore=material.extrascore
         material.extrapublic=float(request.POST['public'])
-        material.initpublic=material.initpublic
+        material.initpublic=material.extrapublic
         material.description=request.POST['description']
         
         material.level=request.POST.get("level","")
@@ -168,7 +266,12 @@ def saveedition(request):
             
         material.num_pic=i
         material.save()
-        return HttpResponseRedirect('/rewardu/materialpage/editspecificmaterial/?material_id='+materialid)
+        #return HttpResponseRedirect('/rewardu/materialpage/editspecificmaterial/?material_id='+materialid)
+        return HttpResponseRedirect('/rewardu/materialpage/')
+        #response=HttpResponse()
+        #response.write(request.META[])
+        #return response
+        
     else:
         return HttpResponseRedirect('/my_app/login/')
     

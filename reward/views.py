@@ -69,7 +69,7 @@ def savematerial(request):
             return HttpResponseRedirect('/reward/materialpage/')
         description=request.POST.get("description","")
         score=request.POST.get("score","")
-        public=request.POST.get("public","")
+        #public=request.POST.get("public","")
         
         level=request.POST.get("level","")
         fromtime=request.POST.get("fromtime","")
@@ -93,7 +93,8 @@ def savematerial(request):
                     fp.write(part)
                        
         material=Material(task=task,extrascore=float(score),initscore=float(score),\
-                          extrapublic=float(public),initpublic=float(public),description=description,\
+                          #extrapublic=float(public),initpublic=float(public),
+                          description=description,\
                           materialid=foldnum+1,num_pic=i,level=level,fromtime=fromtime,\
                           totime=totime,kind=kind)
         task.material_num=task.material_num+1

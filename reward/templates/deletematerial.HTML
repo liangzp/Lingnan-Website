@@ -23,8 +23,10 @@
        <th>说明</th>
        <th>提交时加的绩点</th>
        <th>审核后加的绩点</th>
+       <!--
        <th>提交时加的公益时</th>
        <th>审核后加的公益时</th>
+       -->
        <th></th>
     </tr>
     {% for material in materiallist %}
@@ -33,8 +35,10 @@
     	 <td>{{material.description}}</td>
     	 <td>{{material.initscore}}</td>
     	 <td>{{material.extrascore}}</td>
+    	 <!--
     	 <td>{{material.initpublic}}</td>
     	 <td>{{material.extrapublic}}</td>
+    	 -->
     	 <td><input type="button" id="{{material.materialid}}" value="删除" onclick="deletematerial(this.id)"></td>
     </tr>
     {% endfor %}

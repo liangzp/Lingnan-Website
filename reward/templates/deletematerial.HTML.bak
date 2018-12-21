@@ -14,6 +14,7 @@
 		 </script>
 </head>
 <body>
+	<p>院级奖学金评选</p><br>
 	这个页面删除已有的加分项<br>
 	<a href="/reward/materialpage/">返回奖学金主页</a><br>
 	<table border="1">
@@ -22,8 +23,10 @@
        <th>说明</th>
        <th>提交时加的绩点</th>
        <th>审核后加的绩点</th>
+       <!--
        <th>提交时加的公益时</th>
        <th>审核后加的公益时</th>
+       -->
        <th></th>
     </tr>
     {% for material in materiallist %}

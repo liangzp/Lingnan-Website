@@ -8,6 +8,7 @@
 		 </script>
 </head>
 <body>
+	  <p>院级奖学金评选</p><br>
 		<a href="/reward/materialpage/viewmaterial/">返回查看材料主页</a><br>
 		活动开始时间：<input type="text" id="fromtime" name="fromtime" value="{{material.fromtime}}" disabled/>，
 		活动结束时间：<input type="text" id="totime" name="totime" value="{{material.totime}}" disabled/><br>

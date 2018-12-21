@@ -70,12 +70,13 @@
 		    		alert("绩点输入不合要求");
 		    		return;
 		    	}
+		    	/*
 		    	reg =new RegExp("[0-9]+")
 		    	if(!reg.test(document.getElementById("public").value))
 		    	{
 		    		alert("公益时输入不合要求");
 		    		return;
-		    	}
+		    	}*/
 		    	form1=document.getElementById("form1");
 		    	//form1.action="/reward/materialpage/savematerial/";
 		    	form1.submit();
@@ -94,11 +95,13 @@
 		{% csrf_token %}
 		<input type="hidden" value="{{materialid}}" id="materialid" name="materialid">
 		<input type="button" id="button_exist" value="保存" onclick="submitform()" /><br>
-		<a href="/rewardu/materialpage/editmaterial/">返回编辑主页</a><br>
+		<a href="/rewardu/materialpage/editmaterialscore/">返回编辑主页</a><br>
 		活动开始时间：<input type="month" id="fromtime" name="fromtime" value="{{material.fromtime}}"/>，
 		活动结束时间：<input type="month" id="totime" name="totime" value="{{material.totime}}" /><br>
 		该材料加绩点：<input type="text" name="score" id="score" value="{{material.extrascore}}" /><br>
-		该材料加公益时：<input type="text" name="public" id="public" value="{{material.extrapublic}}" /><br>
+		<!--该材料加公益时：<input type="text" name="public" id="public" value="{{material.extrapublic}}" /><br>-->
+		<!--该材料加公益时：<input type="text" name="public" id="public" /><br>-->
+		<input type="hidden" name="public" id="public" value="0"/>
 		级别：<select name="level" id="level">
 			<option value="国家级" {% ifequal material.level "国家级" %} selected {% endifequal %}>国家级</option>
 			<option value="省级" {% ifequal material.level "省级" %} selected {% endifequal %}>省级</option>

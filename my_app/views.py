@@ -11,6 +11,7 @@ import numpy as np
 import io
 import smtplib
 from email.mime.text import MIMEText
+from django.core.mail import send_mail
 # Create your views here.
 
 def testtemplate(request):
@@ -211,48 +212,37 @@ def updatestatus(request):#这里相当于是用未被审核列表里面传递�
             #发送邮件
             content=app.name+",你好。你对"+app.date+"下第"+str(app.begintime)+"节课到第"+str(app.endtime)+"节课"+\
                     app.classroom+"的使用权申请已通过，祝好！\n此为通知邮件，请勿回复。"
-            mail_host = "smtp.163.com"  # SMTP服务器
-            mail_user = u"infosystemg10@163.com"  # 用户名
-            mail_pass = "2018lnxyxgb"  # 密码
-            sender = 'infosystemg10@163.com'  
-            receivers = ["infosystemg10@163.com",app.mailbox]
-            title = '课室申请通过'  # 邮件主题
-            message = MIMEText(content, 'plain', 'utf-8')  # 内容, 格式, 编码
-            message['From'] = "{}".format(sender)
-            #message['From']=u"管理信息系统第十小组"+"<"+sender+">"
-            message['To'] = ",".join(receivers)
-            message['Subject'] = title
+            mail_info=0
             try:
-                smtpObj = smtplib.SMTP_SSL(mail_host, 465)  # 启用SSL发信, 端口一般是465
-                smtpObj.login(mail_user, mail_pass)  # 登录验证
-                smtpObj.sendmail(sender, receivers, message.as_string())  # 发送
+                mail_info=send_mail('课室申请通过',content, '870051555@qq.com', [app.mailbox])
             except:
                 pass
+            if mail_info==0:
+                response=HttpResponse()
+                response.write("<script>alert('邮件发送失败');window.location.href='/my_app/permitapplication/';</script>")
+                return response
+            return HttpResponseRedirect('/my_app/permitapplication')
+        
         elif info=="no":
             app.status=u"被拒绝"
             app.feedback=request.GET.get(str(index)+"opinion",None)
             app.save()
             content=app.name+",你好。你对"+app.date+"下第"+str(app.begintime)+"节课到第"+str(app.endtime)+"节课"+\
                     app.classroom+"的使用权申请未通过，反馈意见为\n"+app.feedback+"\n此为通知邮件，请勿回复。"
-            mail_host = "smtp.163.com"  # SMTP服务器
-            mail_user = u"infosystemg10@163.com"  # 用户名
-            mail_pass = "2018lnxyxgb"  # 密码
-            sender = 'infosystemg10@163.com'  
-            receivers = ["infosystemg10@163.com",app.mailbox]
-            title = '课室申请未通过'  # 邮件主题
-            message = MIMEText(content, 'plain', 'utf-8')  # 内容, 格式, 编码
-            message['From'] = "{}".format(sender)
-            message['To'] = ",".join(receivers)
-            message['Subject'] = title
+            mail_info=0
             try:
-                smtpObj = smtplib.SMTP_SSL(mail_host, 465)  # 启用SSL发信, 端口一般是465
-                smtpObj.login(mail_user, mail_pass)  # 登录验证
-                smtpObj.sendmail(sender, receivers, message.as_string())  # 发送
+                mail_info=send_mail('课室申请不通过',content, '870051555@qq.com', [app.mailbox])
             except:
                 pass
+            if mail_info==0:
+                response=HttpResponse()
+                response.write("<script>alert('邮件发送失败');window.location.href='/my_app/permitapplication/';</script>")
+                return response
+            return HttpResponseRedirect('/my_app/permitapplication/')
+        
         else:
             continue            
-    return HttpResponseRedirect('/my_app/permitapplication')
+        return HttpResponseRedirect('/my_app/permitapplication/')
 
     
 def applyselclassroom(request):
