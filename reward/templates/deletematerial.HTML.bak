@@ -15,7 +15,7 @@
 </head>
 <body>
 	这个页面删除已有的加分项<br>
-	<a href="/reward/materialpage/">返回编辑主页</a><br>
+	<a href="/reward/materialpage/">返回奖学金主页</a><br>
 	<table border="1">
      <tr>
        <th>加分项编号</th>

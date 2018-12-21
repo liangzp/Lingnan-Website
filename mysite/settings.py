@@ -33,6 +33,7 @@ ALLOWED_HOSTS = ['*',]
 INSTALLED_APPS = [
     #'polls.apps.PollsConfig',
     #MyAppConfig
+    'rewardu.apps.RewarduConfig',
     'reward.apps.RewardConfig',
     'my_app.apps.MyAppConfig',
     'django.contrib.admin',
@@ -59,7 +60,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         #'DIRS': [u"E:\\django-master\\django\\bin\\mysite\\mysite\\template",],
-        'DIRS': [os.path.join(os.path.dirname(__file__), 'template').replace('\\','/'),"reward\\templates"],
+        'DIRS': [os.path.join(os.path.dirname(__file__), 'template').replace('\\','/'),"reward\\templates","rewardu\\templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

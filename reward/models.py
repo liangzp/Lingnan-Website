@@ -11,7 +11,7 @@ class Task(models.Model):
     status=models.IntegerField(default=0)#数字方式表明目前到了哪一个状态，0表示没开始，1表示第一个阶段
     material_num=models.IntegerField(default=0)#记录该任务的材料数量。这个值只会增加，不会减少，以方便命名
     now_checker=models.CharField(max_length=20,default=str(None))#表明当前轮到谁审核
-    total_material=models.IntegerField(default=0)#这个用来记录
+    total_material=models.IntegerField(default=0)#这个用来记录材料总数，会增加也会减少
     def __str__(self):
         return self.description
 
@@ -24,6 +24,11 @@ class Material(models.Model):#一个加分项对应多张图片
     description=models.CharField(max_length=200,default=str(None))#该加分项的描述
     materialid=models.IntegerField(default=0)#这个变量实际上是用来记录对应的文件夹名字的
     num_pic=models.IntegerField(default=0)#记录该加分项下有多少张图片
+    
+    level=models.CharField(max_length=20,default=str("其他"))#该加分项的级别
+    fromtime=models.CharField(max_length=20,default=str(None))#该活动的开始时间，只需月份即可
+    totime=models.CharField(max_length=20,default=str(None))#该活动的结束时间，只需月份即可
+    kind=models.CharField(max_length=20,default=str(None))#该活动的结束时间，只需月份即可
     def __str__(self):
         return self.description+"加分是"
 

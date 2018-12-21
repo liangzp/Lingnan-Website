@@ -38,7 +38,7 @@
         </tr>
         {% endfor %}
      </table>
-   <form action="/materialpage/editspecificmaterial/" name="form1">
+   <form action="/reward/materialpage/editspecificmaterial/" name="form1">
    	 <input type="hidden" name="material_id" id="material_id" value="0">
    </form>	
 </body>

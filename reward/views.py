@@ -17,7 +17,7 @@ def materialpage(request):
             os.makedirs(savepath)
         num_addscore=len(os.listdir(savepath))
         user=User.objects.filter(uname=request.COOKIES['username'])[0]
-        task=Task.objects.filter(user=user).filter(description="奖学金")[0]
+        task=Task.objects.filter(user=user).filter(description="院级奖学金")[0]
         status=eval(task.checkorder)[task.status-1]
         if status!="self":
             changematerial="True"
@@ -44,8 +44,9 @@ def submitnewmaterial(request):
 def editmaterial(request):
     if "username" in request.COOKIES:
         user=User.objects.filter(uname=request.COOKIES['username'])[0]
-        task=Task.objects.filter(user=user).filter(description="奖学金")[0]
+        task=Task.objects.filter(user=user).filter(description="院级奖学金")[0]
         materiallist=Material.objects.filter(task=task)
+        
         response=render(request, 'editmaterial.HTML',locals())        
         return HttpResponse(response)
     else:
@@ -55,7 +56,7 @@ def deletematerial(request):
     #deletematerial
     if "username" in request.COOKIES:
         user=User.objects.filter(uname=request.COOKIES['username'])[0]
-        task=Task.objects.filter(user=user).filter(description="奖学金")[0]
+        task=Task.objects.filter(user=user).filter(description="院级奖学金")[0]
         materiallist=Material.objects.filter(task=task)
         response=render(request, 'deletematerial.HTML',locals())        
         return HttpResponse(response)
@@ -70,8 +71,13 @@ def savematerial(request):
         score=request.POST.get("score","")
         public=request.POST.get("public","")
         
+        level=request.POST.get("level","")
+        fromtime=request.POST.get("fromtime","")
+        totime=request.POST.get("totime","")
+        kind=request.POST.get("kind","")
+        
         user=User.objects.filter(uname=request.COOKIES['username'])[0]
-        task=Task.objects.filter(user=user).filter(description="奖学金")[0]
+        task=Task.objects.filter(user=user).filter(description="院级奖学金")[0]
         
         savepath=os.path.join(os.path.dirname(__file__), 'pic\\'+request.COOKIES['username']).replace('\\','/')
         foldnum=task.material_num
@@ -88,8 +94,10 @@ def savematerial(request):
                        
         material=Material(task=task,extrascore=float(score),initscore=float(score),\
                           extrapublic=float(public),initpublic=float(public),description=description,\
-                          materialid=foldnum+1,num_pic=i)
+                          materialid=foldnum+1,num_pic=i,level=level,fromtime=fromtime,\
+                          totime=totime,kind=kind)
         task.material_num=task.material_num+1
+        task.total_material=task.total_material+1
         material.save()
         task.save()
         return HttpResponseRedirect('/reward/materialpage/editspecificmaterial/')
@@ -109,9 +117,8 @@ def editspecificmaterial(request):
             return HttpResponseRedirect('/reward/materialpage/')
         materialid=int(request.GET.get("material_id","0"))
         user=User.objects.filter(uname=request.COOKIES['username'])[0]
-        task=Task.objects.filter(user=user).filter(description="奖学金")[0]
+        task=Task.objects.filter(user=user).filter(description="院级奖学金")[0]
         material=Material.objects.filter(task=task).filter(materialid=materialid)[0]
-        
         picpath=os.path.join(os.path.dirname(__file__), 'pic\\'+request.COOKIES['username']+"\\"+request.GET.get("material_id","0")).replace('\\','/')
         piclist=os.listdir(picpath)
         #for i in range(len(piclist)):#把获得文件名的后缀去掉
@@ -126,7 +133,7 @@ def saveedition(request):
         if "materialid" not in request.POST:
             return HttpResponseRedirect('/my_app/login/')
         user=User.objects.filter(uname=request.COOKIES["username"])[0]
-        task=Task.objects.filter(user=user).filter(description="奖学金")[0]
+        task=Task.objects.filter(user=user).filter(description="院级奖学金")[0]
         materialid=request.POST['materialid']
         material=Material.objects.filter(task=task).filter(materialid=materialid)[0]
         #先处理加分是否有变化       
@@ -136,6 +143,10 @@ def saveedition(request):
         material.initpublic=material.initpublic
         material.description=request.POST['description']
         
+        material.level=request.POST.get("level","")
+        material.fromtime=request.POST.get("fromtime","")
+        material.totime=request.POST.get("totime","")
+        material.kind=request.POST.get("kind","")
         #处理是否有删除已经存好的图片
         picpath=os.path.join(os.path.dirname(__file__), 'pic\\'+request.COOKIES['username']+"\\"+materialid).replace('\\','/')
         piclist=os.listdir(picpath)
@@ -157,7 +168,7 @@ def saveedition(request):
             
         material.num_pic=i
         material.save()
-        return HttpResponseRedirect('/reward/materialpage/editspecificmaterial/')
+        return HttpResponseRedirect('/reward/materialpage/editspecificmaterial/?material_id='+materialid)
     else:
         return HttpResponseRedirect('/my_app/login/')
     
@@ -172,10 +183,12 @@ def submitdeletematerial(request):
             os.remove(materialpath+"/"+file)
         os.rmdir(materialpath)
         user=User.objects.filter(uname=request.COOKIES["username"])[0]
-        task=Task.objects.filter(user=user).filter(description="奖学金")[0]
+        task=Task.objects.filter(user=user).filter(description="院级奖学金")[0]
         materialid=request.GET["targetmaterial"]
         material=Material.objects.filter(task=task).filter(materialid=int(materialid))[0]
         material.delete()
+        task.total_material=task.total_material-1
+        task.save()
         #response=HttpResponse()
         #response.write(path)
         #return response
@@ -186,7 +199,7 @@ def submitdeletematerial(request):
 def viewmaterial(request):
     if "username" in request.COOKIES:
         user=User.objects.filter(uname=request.COOKIES['username'])[0]
-        task=Task.objects.filter(user=user).filter(description="奖学金")[0]
+        task=Task.objects.filter(user=user).filter(description="院级奖学金")[0]
         status=eval(task.checkorder)[task.status-1]
         if status=="self":
             return HttpResponseRedirect('/reward/materialpage/')
@@ -204,7 +217,7 @@ def viewspecificmaterial(request):
             return HttpResponseRedirect('/reward/materialpage/')
         materialid=int(request.GET.get("material_id","0"))
         user=User.objects.filter(uname=request.COOKIES['username'])[0]
-        task=Task.objects.filter(user=user).filter(description="奖学金")[0]
+        task=Task.objects.filter(user=user).filter(description="院级奖学金")[0]
         status=eval(task.checkorder)[task.status-1]
         if status=="self":
             return HttpResponseRedirect('/reward/materialpage/')
@@ -239,7 +252,7 @@ def checkspecifictask(request):
             return HttpResponseRedirect('/reward/materialpage/')
         #materialid=int(request.GET.get("material_id","0"))
         user=User.objects.filter(uname=request.GET['username'])[0]
-        task=Task.objects.filter(user=user).filter(description="奖学金")[0]
+        task=Task.objects.filter(user=user).filter(description="院级奖学金")[0]
         materiallist=Material.objects.filter(task=task)
         response=render(request,"checkspecifictask.html",locals())
         return HttpResponse(response)
@@ -254,7 +267,7 @@ def checkspecificmaterial(request):
             return HttpResponseRedirect('/reward/materialpage/')
         materialid=int(request.GET.get("material_id","0"))
         user=User.objects.filter(uname=request.GET['user'])[0]
-        task=Task.objects.filter(user=user).filter(description="奖学金")[0]
+        task=Task.objects.filter(user=user).filter(description="院级奖学金")[0]
         material=Material.objects.filter(task=task).filter(materialid=materialid)[0]
         #opinionlist=Opinion.objects.filter(material=material).filter(name=request.COOKIES["username"])
         opinionlist=Opinion.objects.filter(material=material)
@@ -286,7 +299,7 @@ def savecheck(request):
             return HttpResponseRedirect('/reward/materialpage/')
         materialid=int(request.POST.get("materialid","0"))
         user=User.objects.filter(uname=request.POST['name'])[0]
-        task=Task.objects.filter(user=user).filter(description="奖学金")[0]
+        task=Task.objects.filter(user=user).filter(description="院级奖学金")[0]
         material=Material.objects.filter(task=task).filter(materialid=materialid)[0]
         rightnow=now().strftime('%Y-%m-%d %H:%M:%S')
         opinioncontent=request.POST['myopinion']
