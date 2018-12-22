@@ -40,4 +40,7 @@ class Opinion(models.Model):
     def __str__(self):
         return self.opinioncontent+"——"+self.name+" "+self.submitdate
 
+class Result(models.Model):
+    uname=models.CharField(max_length=200,default=str(None))
+    extrascore=models.FloatField(default=0.0)
 # Create your models here.

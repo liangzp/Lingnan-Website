@@ -106,7 +106,7 @@ def applypage(request):
             activity=request.GET.get('activity',"")
             begintime=request.GET.get('begintime',"")
             endtime=request.GET.get('endtime',"")
-            applist=Application.objects.filter(name=request.COOKIES['username'])
+            applist=Application.objects.filter(name=request.COOKIES['username']).order_by('-submittime')
             mailbox=request.GET.get('mailbox','')
             if len(applist)>10:
                 applist=applist[:10]

@@ -5,6 +5,7 @@ from my_app.models import User
 from reward.models import Task
 from reward.models import Material
 from reward.models import Opinion
+from reward.models import Result
 from django.core.files import File
 import io
 import os
@@ -15,6 +16,8 @@ def materialpage(request):
         savepath=os.path.join(os.path.dirname(__file__), 'pic\\'+request.COOKIES['username']).replace('\\','/')
         if os.path.exists(savepath) ==False:
             os.makedirs(savepath)
+        with io.open(os.path.dirname(__file__)+"\\result.txt","r") as f:
+            signal=f.readline()
         num_addscore=len(os.listdir(savepath))
         user=User.objects.filter(uname=request.COOKIES['username'])[0]
         task=Task.objects.filter(user=user).filter(description="院级奖学金")[0]
@@ -31,6 +34,8 @@ def materialpage(request):
 
 def submitnewmaterial(request):
     if "username" in request.COOKIES:
+        if iseditable(request.COOKIES['username'])==False:
+            return HttpResponseRedirect('/reward/materialpage/')
         savepath=os.path.join(os.path.dirname(__file__), 'pic\\'+request.COOKIES['username']).replace('\\','/')
         if os.path.exists(savepath) ==False:
             os.makedirs(savepath)
@@ -45,6 +50,8 @@ def editmaterial(request):
     if "username" in request.COOKIES:
         user=User.objects.filter(uname=request.COOKIES['username'])[0]
         task=Task.objects.filter(user=user).filter(description="院级奖学金")[0]
+        if iseditable(request.COOKIES['username'])==False:
+            return HttpResponseRedirect('/reward/materialpage/')
         materiallist=Material.objects.filter(task=task)
         
         response=render(request, 'editmaterial.HTML',locals())        
@@ -57,6 +64,8 @@ def deletematerial(request):
     if "username" in request.COOKIES:
         user=User.objects.filter(uname=request.COOKIES['username'])[0]
         task=Task.objects.filter(user=user).filter(description="院级奖学金")[0]
+        if iseditable(request.COOKIES['username'])==False:
+            return HttpResponseRedirect('/reward/materialpage/')
         materiallist=Material.objects.filter(task=task)
         response=render(request, 'deletematerial.HTML',locals())        
         return HttpResponse(response)
@@ -115,6 +124,8 @@ def rewardmain(request):
 def editspecificmaterial(request):
     if "username" in request.COOKIES:
         if "material_id" not in request.GET:
+            return HttpResponseRedirect('/reward/materialpage/')
+        if iseditable(request.COOKIES['username'])==False:
             return HttpResponseRedirect('/reward/materialpage/')
         materialid=int(request.GET.get("material_id","0"))
         user=User.objects.filter(uname=request.COOKIES['username'])[0]
@@ -175,6 +186,8 @@ def saveedition(request):
     
 def submitdeletematerial(request):
     if "username" in request.COOKIES:
+        if iseditable(request.COOKIES['username'])==False:
+            return HttpResponseRedirect('/reward/materialpage/')
         if "targetmaterial" not in request.GET:
             HttpResponseRedirect("/reward/materialpage/deletematerial/")
         materialpath=os.path.join(os.path.dirname(__file__), 'pic\\'+request.COOKIES['username']+"\\"+request.GET['targetmaterial']).replace('\\','/')
@@ -313,8 +326,30 @@ def savecheck(request):
         return HttpResponseRedirect('/reward/materialpage/checkspecificmaterial/?material_id='+request.POST["materialid"]+'&user='+request.POST["name"])
     else:
         return HttpResponseRedirect('/my_app/login/')
-    
-    
+
+def reuslt(request):
+    if "username" in request.COOKIES:
+        with io.open(os.path.dirname(__file__)+"\\result.txt","r") as f:
+            signal=f.readline()
+        if signal!="1":
+            return HttpResponseRedirect('/my_app/managestu/')
+        relist=Result.objects.all().order_by('uname')
+        response=render(request,"result.html",locals())
+        return HttpResponse(response)
+    else:
+        return HttpResponseRedirect('/my_app/login/')
+
+def iseditable(uname):
+    user=User.objects.filter(uname=uname)[0]
+    task=Task.objects.filter(user=user).filter(description="院级奖学金")[0]
+    status=eval(task.checkorder)[task.status-1]
+    if status!="self":
+        return False
+    with io.open(os.path.dirname(__file__)+"\\result.txt","r") as f:
+        signal=f.readline()
+    if signal=="1":
+        return False
+    return True
 '''
 from django.core.files import File
 user1=User(name='abc')

@@ -32,7 +32,7 @@ class Materialu(models.Model):#一个加分项对应多张图片
     
     destype=models.CharField(max_length=20,default=str(None))#该材料的描述，这里用于区分校级奖学金的绩点和公益时材料
     def __str__(self):
-        return self.description+"加分是"
+        return self.description+"加分是"+self.extrascore+"，加公益时"+self.extrapublic
 
 class Opinionu(models.Model):
     material=models.ForeignKey(Materialu, on_delete=models.CASCADE)
@@ -41,5 +41,10 @@ class Opinionu(models.Model):
     submitdate=models.CharField(max_length=100,default=str(None))#意见提交时间
     def __str__(self):
         return self.opinioncontent+"——"+self.name+" "+self.submitdate
+    
+class Resultu(models.Model):
+    uname=models.CharField(max_length=200,default=str(None))
+    extrapublic=models.FloatField(default=0.0)
+    extrascore=models.FloatField(default=0.0)
 
 # Create your models here.

@@ -32,6 +32,10 @@
 		    {
 		        window.location.href="/rewardu/materialpage/checktask/"
 		    }
+		    function viewresult()
+		    {
+		        window.location.href="/rewardu/result/"
+		    }
 		 </script>
 </head>
 <body>
@@ -44,6 +48,7 @@
 	<input type="button" value="删除加分项" id="deleteexist" onclick="deletematerial()"><br>
 	<input type="button" value="我的审核任务" id="mycheck" onclick="checktask()"><br>
 	<input type="button" value="查看审核结果" id="viewmaterial" onclick="viewmaterial()" hidden>	
+	<input type="button" value="查看公示结果" id="result" onclick="viewresult()" hidden><br>
 	<div id="textcontent" hidden>
     提交时间已截止，你已经不能上传/修改/删除材料</br>
   </div>
@@ -54,10 +59,23 @@
 		{
     	document.getElementById("addnewscore").disabled=true;
     	document.getElementById("addnewpublic").disabled=true;
-    	document.getElementById("edit").disabled=true;
+    	document.getElementById("editscore").disabled=true;
+    	document.getElementById("editpublic").disabled=true;
     	document.getElementById("deleteexist").disabled=true;
     	document.getElementById("textcontent").hidden=false;
     	document.getElementById("viewmaterial").hidden=false;
+    	document.getElementById("result").hidden=true;
+    }
+    if("{{signal}}"=="1")
+		{
+    	document.getElementById("addnewscore").disabled=true;
+    	document.getElementById("addnewpublic").disabled=true;
+    	document.getElementById("editscore").disabled=true;
+    	document.getElementById("editpublic").disabled=true;
+    	document.getElementById("deleteexist").disabled=true;
+    	document.getElementById("textcontent").hidden=true;
+    	document.getElementById("viewmaterial").hidden=true;
+    	document.getElementById("result").hidden=false;
     }
 	</script>
 	

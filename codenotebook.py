@@ -131,49 +131,71 @@ task.save()
 #%%读取每个人的院级总加分数
 import pandas as pd
 from my_app.models import User
-from reward.models import Task,Material
-datacollege=pd.DataFrame({'学号':[],'院级总加分':[]}) 
+from reward.models import Task,Material,Result
+Result.objects.all().delete()
+#datacollege=pd.DataFrame({'学号':[],'院级总加分':[]}) 
 for user in User.objects.all():
-    name=user.uname
+    if user.role=="administrator":
+        continue
     task=Task.objects.filter(user=user).filter(description="院级奖学金")
     extrascore=0
     if len(task)==0:
-        datacollege.loc[datacollege.shape[0]]=[name,extrascore]
+        #datacollege.loc[datacollege.shape[0]]=[name,extrascore]
+        re=Result(extrascore=extrascore,uname=user.uname)
+        re.save()
         continue
     task=task[0]
     materiallist=Material.objects.filter(task=task)
     if len(materiallist)==0:
-        datacollege.loc[datacollege.shape[0]]=[name,extrascore]
+        #datacollege.loc[datacollege.shape[0]]=[name,extrascore]
+        re=Result(extrascore=extrascore,uname=user.uname)
+        re.save()
         continue
     for material in materiallist:
         extrascore=extrascore+material.extrascore
-    datacollege.loc[datacollege.shape[0]]=[name,extrascore]
+    re=Result(extrascore=extrascore,uname=user.uname)
+    re.save()
+    #datacollege.loc[datacollege.shape[0]]=[name,extrascore]
+'''
 datacollege.sort_values(by='学号',ascending=True,inplace=True)
 #writer = pd.ExcelWriter(u'E:\\工作事务\\小组工作\\大三上\\管理信息系统\\期末作业\\project\\Lingnan-Website\\college.xlsx')
 writer = pd.ExcelWriter('college.xlsx')
 datacollege.to_excel(writer,sheet_name='Sheet1')
 datacollege.to_csv('college.csv',encoding="utf-8",index=False)
+'''
 #%%
-import pandas as pd
+#import pandas as pd
 from my_app.models import User
-from rewardu.models import Tasku,Materialu
-datauniversity=pd.DataFrame({'学号':[],'校级总加分':[],'公益时总数':[]}) 
+from rewardu.models import Tasku,Materialu,Resultu
+Resultu.objects.all().delete()
+#datauniversity=pd.DataFrame({'学号':[],'校级总加分':[],'公益时总数':[]}) 
 for user in User.objects.all():
-    name=user.uname
+    #name=user.uname
+    if user.role=="administrator":
+        continue
     task=Tasku.objects.filter(user=user).filter(description="校级奖学金")
     extrascore=0
     extrapublic=0
     if len(task)==0:
-        datauniversity.loc[datauniversity.shape[0]]=[name,extrascore,extrapublic]
+        #datauniversity.loc[datauniversity.shape[0]]=[name,extrascore,extrapublic]
+        re=Resultu(extrascore=extrascore,extrapublic=extrapublic,uname=user.uname)
+        re.save()
         continue
     task=task[0]
     materiallist=Materialu.objects.filter(task=task)
     if len(materiallist)==0:
-        datauniversity.loc[datauniversity.shape[0]]=[name,extrascore,extrapublic]
+        #datauniversity.loc[datauniversity.shape[0]]=[name,extrascore,extrapublic]
+        re=Resultu(extrascore=extrascore,extrapublic=extrapublic,uname=user.uname)
+        re.save()
         continue
     for material in materiallist:
         extrascore=extrascore+material.extrascore
         extrapublic=extrapublic+material.extrapublic
+    re=Resultu(extrascore=extrascore,extrapublic=extrapublic,uname=user.uname)
+    re.save()
+'''
     datauniversity.loc[datauniversity.shape[0]]=[name,extrascore,extrapublic] 
 datauniversity.sort_values(by=u'学号',ascending=True,inplace=True)
 datauniversity.to_csv('university.csv',encoding="utf-8",index=False)
+'''
+

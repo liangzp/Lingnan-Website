@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html>
+<head> 
+     <meta charset="utf-8">
+     <title>添加新加分项</title>
+</head>
+<body>
+	<p>院级奖学金评选</p><br>
+	<a href="/rewardu/materialpage/">返回材料主页</a><br>
+	<table border="1">
+    <tr>
+       <th>姓名</th>
+       <th>绩点总加分</th>
+    </tr>
+    {% for re in relist %}
+    <tr>
+    	 <td>{{ re.uname }}</td>
+    	 <td>{{re.extrascore}}</td>
+    </tr>
+    {%endfor%}
+  </table>
+</body>
+</html>

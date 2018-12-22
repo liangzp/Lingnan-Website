@@ -5,6 +5,7 @@ from my_app.models import User
 from rewardu.models import Tasku
 from rewardu.models import Materialu
 from rewardu.models import Opinionu 
+from rewardu.models import Resultu 
 from django.core.files import File
 import io
 import os
@@ -15,6 +16,8 @@ def materialpage(request):
         savepath=os.path.join(os.path.dirname(__file__), 'pic\\'+request.COOKIES['username']).replace('\\','/')
         if os.path.exists(savepath) ==False:
             os.makedirs(savepath)
+        with io.open(os.path.dirname(__file__)+"\\result.txt","r") as f:
+            signal=f.readline()
         num_addscore=len(os.listdir(savepath))
         user=User.objects.filter(uname=request.COOKIES['username'])[0]
         task=Tasku.objects.filter(user=user).filter(description="校级奖学金")[0]
@@ -31,11 +34,11 @@ def materialpage(request):
 
 def submitnewmaterialscore(request):
     if "username" in request.COOKIES:
+        if iseditable(request.COOKIES['username'])==False:
+            return HttpResponseRedirect('/rewardu/materialpage/')
         savepath=os.path.join(os.path.dirname(__file__), 'pic\\'+request.COOKIES['username']).replace('\\','/')
         if os.path.exists(savepath) ==False:
             os.makedirs(savepath)
-        #savepath的路径是创建了每一个人的总文件夹，这个文件夹下只有文件夹下只有文件夹，没有文件
-        #os.listdir是获得文件夹下文件夹+文件的数目
         response=render(request, 'submitnewmaterialuscore.HTML')        
         return HttpResponse(response)
     else:
@@ -43,6 +46,8 @@ def submitnewmaterialscore(request):
     
 def submitnewmaterialpublic(request):
     if "username" in request.COOKIES:
+        if iseditable(request.COOKIES['username'])==False:
+            return HttpResponseRedirect('/rewardu/materialpage/')
         savepath=os.path.join(os.path.dirname(__file__), 'pic\\'+request.COOKIES['username']).replace('\\','/')
         if os.path.exists(savepath) ==False:
             os.makedirs(savepath)
@@ -55,6 +60,8 @@ def submitnewmaterialpublic(request):
     
 def editmaterialscore(request):
     if "username" in request.COOKIES:
+        if iseditable(request.COOKIES['username'])==False:
+            return HttpResponseRedirect('/rewardu/materialpage/')
         user=User.objects.filter(uname=request.COOKIES['username'])[0]
         task=Tasku.objects.filter(user=user).filter(description="校级奖学金")[0]
         materiallist=Materialu.objects.filter(task=task).filter(destype="绩点")
@@ -66,6 +73,8 @@ def editmaterialscore(request):
     
 def editmaterialpublic(request):
     if "username" in request.COOKIES:
+        if iseditable(request.COOKIES['username'])==False:
+            return HttpResponseRedirect('/rewardu/materialpage/')
         user=User.objects.filter(uname=request.COOKIES['username'])[0]
         task=Tasku.objects.filter(user=user).filter(description="校级奖学金")[0]
         materiallist=Materialu.objects.filter(task=task).filter(destype="公益时")
@@ -77,6 +86,8 @@ def editmaterialpublic(request):
 def deletematerial(request):
     #deletematerial
     if "username" in request.COOKIES:
+        if iseditable(request.COOKIES['username'])==False:
+            return HttpResponseRedirect('/rewardu/materialpage/')
         user=User.objects.filter(uname=request.COOKIES['username'])[0]
         task=Tasku.objects.filter(user=user).filter(description="校级奖学金")[0]
         materiallist=Materialu.objects.filter(task=task)
@@ -173,28 +184,12 @@ def rewardmain(request):
         return response
     else:
         return HttpResponseRedirect('/my_app/login/')
-'''   
-def editspecificmaterial(request):
-    if "username" in request.COOKIES:
-        if "material_id" not in request.GET:
-            return HttpResponseRedirect('/rewardu/materialpage/')
-        materialid=int(request.GET.get("material_id","0"))
-        user=User.objects.filter(uname=request.COOKIES['username'])[0]
-        task=Tasku.objects.filter(user=user).filter(description="校级奖学金")[0]
-        material=Materialu.objects.filter(task=task).filter(materialid=materialid)[0]
-        picpath=os.path.join(os.path.dirname(__file__), 'pic\\'+request.COOKIES['username']+"\\"+request.GET.get("material_id","0")).replace('\\','/')
-        piclist=os.listdir(picpath)
-        #for i in range(len(piclist)):#把获得文件名的后缀去掉
-        #    piclist[i]=piclist[i].split(".")[0]
-        response=render(request,"editspecificmaterialuscore.html",locals())
-        return HttpResponse(response)
-    else:
-        return HttpResponseRedirect('/my_app/login/')
-'''
     
 def editspecificmaterialpublic(request):
     if "username" in request.COOKIES:
         if "material_id" not in request.GET:
+            return HttpResponseRedirect('/rewardu/materialpage/')
+        if iseditable(request.COOKIES['username'])==False:
             return HttpResponseRedirect('/rewardu/materialpage/')
         materialid=int(request.GET.get("material_id","0"))
         user=User.objects.filter(uname=request.COOKIES['username'])[0]
@@ -212,6 +207,8 @@ def editspecificmaterialpublic(request):
 def editspecificmaterialscore(request):
     if "username" in request.COOKIES:
         if "material_id" not in request.GET:
+            return HttpResponseRedirect('/rewardu/materialpage/')
+        if iseditable(request.COOKIES['username'])==False:
             return HttpResponseRedirect('/rewardu/materialpage/')
         materialid=int(request.GET.get("material_id","0"))
         user=User.objects.filter(uname=request.COOKIES['username'])[0]
@@ -278,15 +275,19 @@ def saveedition(request):
 def submitdeletematerial(request):
     if "username" in request.COOKIES:
         if "targetmaterial" not in request.GET:
-            HttpResponseRedirect("/rewardu/materialpage/deletematerial/")
+            return HttpResponseRedirect("/rewardu/materialpage/deletematerial/")
+        if iseditable(request.COOKIES['username'])==False:
+            return HttpResponseRedirect('/rewardu/materialpage/')
+        user=User.objects.filter(uname=request.COOKIES['username'])[0]
+        task=Tasku.objects.filter(user=user).filter(description="校级奖学金")[0]
         materialpath=os.path.join(os.path.dirname(__file__), 'pic\\'+request.COOKIES['username']+"\\"+request.GET['targetmaterial']).replace('\\','/')
         if not os.path.exists(materialpath):
             return HttpResponseRedirect("/rewardu/materialpage/deletematerial/")
         for file in os.listdir(materialpath):
             os.remove(materialpath+"/"+file)
         os.rmdir(materialpath)
-        user=User.objects.filter(uname=request.COOKIES["username"])[0]
-        task=Tasku.objects.filter(user=user).filter(description="校级奖学金")[0]
+        #user=User.objects.filter(uname=request.COOKIES["username"])[0]
+        #task=Tasku.objects.filter(user=user).filter(description="校级奖学金")[0]
         materialid=request.GET["targetmaterial"]
         material=Materialu.objects.filter(task=task).filter(materialid=int(materialid))[0]
         material.delete()
@@ -306,6 +307,10 @@ def viewmaterial(request):
         status=eval(task.checkorder)[task.status-1]
         if status=="self":
             return HttpResponseRedirect('/rewardu/materialpage/')
+        with io.open(os.path.dirname(__file__)+"\\result.txt","r") as f:
+            signal=f.readline()
+        if signal=="1":
+            return HttpResponseRedirect('/rewardu/materialpage/')
         materiallist=Materialu.objects.filter(task=task)
         checker=eval(task.checkorder)[task.status-1]
         order=eval(task.checkorder_char)[task.status-1]
@@ -324,6 +329,10 @@ def viewspecificmaterial(request):
         status=eval(task.checkorder)[task.status-1]
         if status=="self":
             return HttpResponseRedirect('/rewardu/materialpage/')
+        with io.open(os.path.dirname(__file__)+"\\result.txt","r") as f:
+            signal=f.readline()
+        if signal=="1":
+            return HttpResponseRedirect('/rewardu/materialpage/')
         material=Materialu.objects.filter(task=task).filter(materialid=materialid)[0]
         opinionlist=Opinionu.objects.filter(material=material)
         picpath=os.path.join(os.path.dirname(__file__), 'pic\\'+request.COOKIES['username']+"\\"+request.GET.get("material_id","0")).replace('\\','/')
@@ -338,6 +347,10 @@ def checktask(request):
         materialid=int(request.GET.get("material_id","0"))
         user=User.objects.filter(uname=request.COOKIES['username'])[0]
         tasklist=Tasku.objects.filter(now_checker=request.COOKIES['username'])
+        with io.open(os.path.dirname(__file__)+"\\result.txt","r") as f:
+            signal=f.readline()
+        if signal=="1":
+            return HttpResponseRedirect('/rewardu/materialpage/')
         '''
         material=Materialu.objects.filter(task=task).filter(materialid=materialid)[0]
         opinionlist=Opinionu.objects.filter(material=material)
@@ -353,6 +366,10 @@ def checkspecifictask(request):
     if "username" in request.COOKIES:
         if "username" not in request.GET:
             return HttpResponseRedirect('/rewardu/materialpage/')
+        with io.open(os.path.dirname(__file__)+"\\result.txt","r") as f:
+            signal=f.readline()
+        if signal=="1":
+            return HttpResponseRedirect('/rewardu/materialpage/')
         #materialid=int(request.GET.get("material_id","0"))
         user=User.objects.filter(uname=request.GET['username'])[0]
         task=Tasku.objects.filter(user=user).filter(description="校级奖学金")[0]
@@ -367,6 +384,10 @@ def checkspecificmaterial(request):
         if "material_id" not in request.GET:
             return HttpResponseRedirect('/rewardu/materialpage/')
         if "user" not in request.GET:
+            return HttpResponseRedirect('/rewardu/materialpage/')
+        with io.open(os.path.dirname(__file__)+"\\result.txt","r") as f:
+            signal=f.readline()
+        if signal=="1":
             return HttpResponseRedirect('/rewardu/materialpage/')
         materialid=int(request.GET.get("material_id","0"))
         user=User.objects.filter(uname=request.GET['user'])[0]
@@ -416,7 +437,29 @@ def savecheck(request):
     else:
         return HttpResponseRedirect('/my_app/login/')
     
+def reuslt(request):
+    if "username" in request.COOKIES:
+        with io.open(os.path.dirname(__file__)+"\\result.txt","r") as f:
+            signal=f.readline()
+        if signal!="1":
+            return HttpResponseRedirect('/my_app/managestu/')
+        relist=Resultu.objects.all().order_by('uname')
+        response=render(request,"resultu.html",locals())
+        return HttpResponse(response)
+    else:
+        return HttpResponseRedirect('/my_app/login/')
     
+def iseditable(uname):
+    user=User.objects.filter(uname=uname)[0]
+    task=Tasku.objects.filter(user=user).filter(description="校级奖学金")[0]
+    status=eval(task.checkorder)[task.status-1]
+    if status!="self":
+        return False
+    with io.open(os.path.dirname(__file__)+"\\result.txt","r") as f:
+        signal=f.readline()
+    if signal=="1":
+        return False
+    return True
 '''
 from django.core.files import File
 user1=User(name='abc')
