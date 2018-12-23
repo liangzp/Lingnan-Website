@@ -373,6 +373,8 @@ def checkspecifictask(request):
         #materialid=int(request.GET.get("material_id","0"))
         user=User.objects.filter(uname=request.GET['username'])[0]
         task=Tasku.objects.filter(user=user).filter(description="校级奖学金")[0]
+        if task.now_checker!=request.COOKIES["username"]:
+            return HttpResponseRedirect('/rewardu/materialpage/')
         materiallist=Materialu.objects.filter(task=task)
         response=render(request,"checkspecifictasku.html",locals())
         return HttpResponse(response)
@@ -392,6 +394,8 @@ def checkspecificmaterial(request):
         materialid=int(request.GET.get("material_id","0"))
         user=User.objects.filter(uname=request.GET['user'])[0]
         task=Tasku.objects.filter(user=user).filter(description="校级奖学金")[0]
+        if task.now_checker!=request.COOKIES["username"]:
+            return HttpResponseRedirect('/rewardu/materialpage/')
         material=Materialu.objects.filter(task=task).filter(materialid=materialid)[0]
         #opinionlist=Opinionu.objects.filter(material=material).filter(name=request.COOKIES["username"])
         opinionlist=Opinionu.objects.filter(material=material)
