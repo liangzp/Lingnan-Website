@@ -3,6 +3,21 @@
 <head> 
      <meta charset="utf-8">
      <title>审核材料</title>
+	 <link rel='stylesheet' href='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css'>	
+	    <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+	 <style type='text/css'>
+#header .header-body{
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url(http://lingnan.sysu.edu.cn/profiles/custom/sysu/modules/sysu_manage/images/lingnan/header-bg.png);
+    background-size: cover;
+    min-height: 158px;
+    max-width: 9000px;
+    padding: 0px;
+}
+</style>
+
      <script>
 		    function submitform()
 		    {
@@ -13,25 +28,88 @@
 		    		return;
 		    	}
 		    	reg =new RegExp("[0-9]+")
+				/*
 		    	if(!reg.test(document.getElementById("public").value))
 		    	{
 		    		alert("公益时输入不合要求");
 		    		return;
-		    	}
+		    	}*/
 		    	form1=document.form1;
 		    	form1.submit();
 		    }
 		 </script>
 </head>
 <body>
+
+<div id="header" class="header-bg-primary">
+	<div class="header-body">
+      <div class="header-container header-top inner ">
+        <div class="header-row">
+          <!-- logo -->
+		  
+          <div class="header-column">
+            <div id="site-logo" class="header-logo">
+              <a href="/"><img src="http://lingnan.sysu.edu.cn/sites/lingnan.prod.dpweb3.sysu.edu.cn/files/logo_1_0.png"/></a>
+            </div>
+          </div>
+          
+	  </div>
+	</div>
+	</div>
+</div>
+
+<div class="col-md-3" >
+		<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span2">
+			<ul class="nav nav-list">
+
+				<li class="active">
+					<a href="/my_app/applypage/">申请教室</a>
+				</li>
+			
+				
+				<li>
+					 <a href="/my_app/managestu/">返回主页</a>
+				</li>
+				
+				<li>
+				<a href="/reward/materialpage/">回到院级奖学金主页</a>
+				</li>
+
+
+				<li>
+					<a href="/reward/materialpage/checktask/">回到审核流程主页</a>
+				</li>
+				
+				<li>
+						<a href="/reward/materialpage/checkspecifictask/?username={{user.uname}}">返回审查其他加分项</a><br>
+				</li>
+				
+				<li class="active">
+					<a href="/my_app/login/">登出</a>
+				</li>
+				
+				<li class="divider">
+				</li>
+			</ul>
+		</div>
+	</div>
+	</div>
+	</div>
+	
+	
+	<div class="col-md-6" >
 	<form action="/reward/materialpage/savecheck/" id="form1" method="POST" name="form1" enctype="multipart/form-data">
 		{% csrf_token %}
 		<input type="hidden" value="{{materialid}}" id="materialid" name="materialid">
 		<input type="hidden" value="{{user.uname}}" id="name" name="name">
-		<input type="button" id="button_exist" value="保存" onclick="submitform()" /><br>
-		<a href="/reward/materialpage/checkspecifictask/?username={{user.uname}}">返回审查其他加分项</a><br>
+		活动开始时间：<input type="text" id="fromtime" name="fromtime" value="{{material.fromtime}}" disabled/>，
+		活动结束时间：<input type="text" id="totime" name="totime" value="{{material.totime}}" disabled/><br>
 		该材料加绩点：<input type="text" name="score" id="score" value="{{material.extrascore}}" /><br>
-		该材料加公益时：<input type="text" name="public" id="public" value="{{material.extrapublic}}" /><br>
+		<!--该材料加公益时：<input type="text" name="public" id="public" value="{{material.extrapublic}}" /><br>-->
+		级别：<input type="text" id="level" name="level" value="{{material.level}}" disabled/><br>
+		加分类型：<input type="text" id="kind" name="kind" value="{{material.kind}}" disabled/><br>
 		如果你认为该材料不合格，就把绩点和公益时都填为0<br>
 		该材料的描述：<input type="text" name="description" id="description" style="width:300px; height:60px;" value="{{material.description}}" diabled/><br>
 		改材料附带的图片：
@@ -43,8 +121,10 @@
 			 {% endfor %}
 	  </div>
 	  历史审核意见：<textarea name="opinion" id="opinion" rows="10" cols="60"/>{{opinioncontent}}</textarea><br><!--这里有爆的风险-->
-	  我的意见：<input type="text" name="myopinion" id="myopinion" style="width:500px; height:80px;"/>
+	  我的意见：<input type="text" name="myopinion" id="myopinion" style="width:500px; height:80px;"/><br>
+	  		<input type="button" id="button_exist" value="保存" onclick="submitform()" /><br>
   </form>
+  </div>
   <script>
   	var text=document.getElementById("description");
   	text.disabled=true;

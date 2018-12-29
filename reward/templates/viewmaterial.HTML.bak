@@ -14,14 +14,18 @@
      </script>
 </head>
 <body>
+	<p>院级奖学金评选</p><br>
+	<a href="/reward/materialpage/">返回材料主页</a><br>
 	<table border="1">
     <tr>
        <th>加分项编号</th>
        <th>说明</th>
        <th>提交时加的绩点</th>
        <th>审核后加的绩点</th>
+       <!--
        <th>提交时加的公益时</th>
        <th>审核后加的公益时</th>
+       -->
        <th>当前审核流程</th>
        <th>当前审核人</th>
        <th></th>

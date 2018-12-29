@@ -24,15 +24,21 @@
 		    {
 		        window.location.href="/reward/materialpage/checktask/"
 		    }
+		    function viewresult()
+		    {
+		        window.location.href="/rewardu/result/"
+		    }
 		 </script>
 </head>
 <body>
+	<p>院级奖学金评选</p><br>
 	本学期的奖学金申请，你已经提交了{{num_addscore}}项加分项,你可以选择：<br>
 	<input type="button" value="提交新加分项的材料" id="addnew" onclick="submitnewmaterial()" ><br>
 	<input type="button" value="编辑已有加分项材料" id="edit" onclick="editmaterial()"><br>
 	<input type="button" value="删除加分项" id="deleteexist" onclick="deletematerial()"><br>
-	<input type="button" value="我的审核任务" id="viewmaterial" onclick="checktask()"><br>
-	<input type="button" value="查看审核结果" id="viewmaterial" onclick="viewmaterial()" hidden>	
+	<input type="button" value="我的审核任务" id="mycheck" onclick="checktask()"><br>
+	<input type="button" value="查看审核结果" id="viewmaterial" onclick="viewmaterial()" hidden>
+	<input type="button" value="查看公示结果" id="result" onclick="viewresult()" hidden><br>	
 	<div id="textcontent" hidden>
     提交时间已截止，你已经不能上传/修改/删除材料</br>
   </div>
@@ -46,6 +52,17 @@
     	document.getElementById("deleteexist").disabled=true;
     	document.getElementById("textcontent").hidden=false;
     	document.getElementById("viewmaterial").hidden=false;
+    	document.getElementById("result").hidden=true;
+    }
+    if("{{signal}}"=="1")
+		{
+    	document.getElementById("addnew").disabled=true;
+    	document.getElementById("edit").disabled=true;
+    	document.getElementById("deleteexist").disabled=true;
+    	document.getElementById("textcontent").hidden=true;
+    	document.getElementById("viewmaterial").hidden=true;
+    	document.getElementById("mycheck").disabled=true;
+    	document.getElementById("result").hidden=false;
     }
 	</script>
 	
