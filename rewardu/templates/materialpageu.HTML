@@ -1,0 +1,147 @@
+<!DOCTYPE HTML>
+<html>
+<head> 
+     <meta charset="utf-8">
+     <title>处理个人加分材料页</title>
+	 <link rel='stylesheet' href='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css'>	
+	    <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="lingnan.css" media="all" />
+	 <style type='text/css'>
+#header .header-body{
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url(http://lingnan.sysu.edu.cn/profiles/custom/sysu/modules/sysu_manage/images/lingnan/header-bg.png);
+    background-size: cover;
+    min-height: 158px;
+    max-width: 9000px;
+    padding: 0px;
+}
+</style>
+
+
+     <script>
+		    function submitnewmaterialscore()
+		    {
+		        window.location.href="/rewardu/materialpage/submitnewmaterialscore/";
+		    }
+		    function submitnewmaterialpublic()
+		    {
+		        window.location.href="/rewardu/materialpage/submitnewmaterialpublic/";
+		    }
+		    function editmaterialscore()
+		    {
+		        window.location.href="/rewardu/materialpage/editmaterialscore/";
+		    }
+		    function editmaterialpublic()
+		    {
+		        window.location.href="/rewardu/materialpage/editmaterialpublic/";
+		    }
+		    function deletematerial()
+		    {
+		        window.location.href="/rewardu/materialpage/deletematerial/"
+		    }
+		    function viewmaterial()
+		    {
+		        window.location.href="/rewardu/materialpage/viewmaterial/"
+		    }
+		    function checktask()
+		    {
+		        window.location.href="/rewardu/materialpage/checktask/"
+		    }
+		    function viewresult()
+		    {
+		        window.location.href="/rewardu/result/"
+		    }
+		 </script>
+</head>
+<body>
+<div id="header" class="header-bg-primary">
+	<div class="header-body">
+      <div class="header-container header-top inner ">
+        <div class="header-row">
+          <!-- logo -->
+		  
+          <div class="header-column">
+            <div id="site-logo" class="header-logo">
+              <a href="/"><img src="http://lingnan.sysu.edu.cn/sites/lingnan.prod.dpweb3.sysu.edu.cn/files/logo_1_0.png"/></a>
+            </div>
+          </div>
+          
+	  </div>
+	</div>
+	</div>
+</div>
+
+<div class="col-md-3" >
+		<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span2">
+			<ul class="nav nav-list">
+				
+
+				<li class="active">
+					<a href="/my_app/applypage/">申请教室</a>
+				</li>
+
+				
+				<li>
+					 <a href="/my_app/managestu/">返回主页</a>
+				</li>
+				
+<li>
+					<a href="/my_app/login/">登出</a>
+				</li>
+				
+							 
+				<li class="divider">
+				</li>
+			</ul>
+		</div>
+	</div>
+	</div>
+	</div>
+	
+	
+	
+	<br>本学期的奖学金申请，你已经提交了{{num_addscore}}项加分项,你可以选择：</br>
+	<input type="button" value="提交绩点加分项的材料" id="addnewscore" onclick="submitnewmaterialscore()" >
+	<input type="button" value="编辑绩点已有加分项材料" id="editscore" onclick="editmaterialscore()"><br>
+	<input type="button" value="提交公益时加分项的材料" id="addnewpublic" onclick="submitnewmaterialpublic()" >
+	<input type="button" value="编辑公益时已有加分材料" id="editpublic" onclick="editmaterialpublic()"><br>
+	<input type="button" value="删除加分项" id="deleteexist" onclick="deletematerial()"><br>
+	<input type="button" value="我的审核任务" id="mycheck" onclick="checktask()"><br>
+	<input type="button" value="查看审核结果" id="viewmaterial" onclick="viewmaterial()" hidden>	
+	<input type="button" value="查看公示结果" id="result" onclick="viewresult()" hidden><br>
+	<div id="textcontent" hidden>
+    提交时间已截止，你已经不能上传/修改/删除材料</br>
+  </div>
+	
+	<script>
+		if("{{changematerial}}"=="True")
+		{
+    	document.getElementById("addnewscore").disabled=true;
+    	document.getElementById("addnewpublic").disabled=true;
+    	document.getElementById("editscore").disabled=true;
+    	document.getElementById("editpublic").disabled=true;
+    	document.getElementById("deleteexist").disabled=true;
+    	document.getElementById("textcontent").hidden=false;
+    	document.getElementById("viewmaterial").hidden=false;
+    	document.getElementById("result").hidden=true;
+    }
+    if("{{signal}}"=="1")
+		{
+    	document.getElementById("addnewscore").disabled=true;
+    	document.getElementById("addnewpublic").disabled=true;
+    	document.getElementById("editscore").disabled=true;
+    	document.getElementById("editpublic").disabled=true;
+    	document.getElementById("deleteexist").disabled=true;
+    	document.getElementById("mycheck").disabled=true;
+    	document.getElementById("textcontent").hidden=true;
+    	document.getElementById("viewmaterial").hidden=true;
+    	document.getElementById("result").hidden=false;
+    }
+	</script>
+	
+</body>
+</html>

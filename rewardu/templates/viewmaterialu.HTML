@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html>
+<head> 
+     <meta charset="utf-8">
+     <title>添加新加分项</title>
+     <script>
+     	  function viewmaeterial(id)
+     	  {
+     	  	var mat_id=document.getElementById("material_id");
+     	  	mat_id.value=id;
+     	  	var form1=document.form1;
+     	  	form1.submit();
+     	  }
+     </script>
+</head>
+<body>
+	<p>校级奖学金评选</p><br>
+	<a href="/rewardu/materialpage/">返回材料主页</a><br>
+	<table border="1">
+    <tr>
+       <th>加分项编号</th>
+       <th>说明</th>
+       <th>提交时加的绩点</th>
+       <th>审核后加的绩点</th>
+       <th>提交时加的公益时</th>
+       <th>审核后加的公益时</th>
+       <th>当前审核流程</th>
+       <th>当前审核人</th>
+       <th></th>
+    </tr>
+    {% for material in materiallist %}
+    <tr>
+    	 <td>{{ forloop.counter }}</td>
+    	 <td>{{material.description}}</td>
+    	 <td>{{material.initscore}}</td>
+    	 <td>{{material.extrascore}}</td>
+    	 <td>{{material.initpublic}}</td>
+    	 <td>{{material.extrapublic}}</td>
+    	 <td>{{order}}</td>
+    	 <td>{{checker}}</td>
+    	 <td><input type="button" id="{{material.materialid}}" value="查看" onclick="viewmaeterial(this.id)"></td>
+    </tr>
+    {% endfor %}
+    <form action="/rewardu/materialpage/viewspecificmaterial/" name="form1">
+   	 <input type="hidden" name="material_id" id="material_id" value="0">
+   </form>
+  </table>
+</body>
+</html>

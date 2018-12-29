@@ -1,0 +1,112 @@
+<!DOCTYPE HTML>
+<html>
+<head> 
+     <meta charset="utf-8">
+     <title>审核流程页</title>
+	 	 <link rel='stylesheet' href='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css'>	
+	    <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="lingnan.css" media="all" />
+	 <style type='text/css'>
+#header .header-body{
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url(http://lingnan.sysu.edu.cn/profiles/custom/sysu/modules/sysu_manage/images/lingnan/header-bg.png);
+    background-size: cover;
+    min-height: 158px;
+    max-width: 9000px;
+    padding: 0px;
+}
+</style>
+
+     <script>
+     		function checkspecifictask(selectuname)
+     		{
+     			var username=document.getElementById("username");
+     			username.value=selectuname;
+     			var form1=document.form1;
+     			form1.submit();
+     		}
+		 </script>
+</head>
+<body>
+<div id="header" class="header-bg-primary">
+	<div class="header-body">
+      <div class="header-container header-top inner ">
+        <div class="header-row">
+          <!-- logo -->
+		  
+          <div class="header-column">
+            <div id="site-logo" class="header-logo">
+              <a href="/"><img src="http://lingnan.sysu.edu.cn/sites/lingnan.prod.dpweb3.sysu.edu.cn/files/logo_1_0.png"/></a>
+            </div>
+          </div>
+          
+	  </div>
+	</div>
+	</div>
+</div>
+
+<div class="col-md-3" >
+		<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span2">
+			<ul class="nav nav-list">
+				
+				
+				<li class="active">
+					<a href="/my_app/applypage/">申请教室</a>
+				</li>
+				
+				<li>
+					 <a href="/my_app/managestu/">返回主页</a>
+				</li>
+				
+				<li>
+				<a href="/rewardu/materialpage/">回到校级奖学金主页</a>
+				</li>
+				
+								<li class="active">
+					<a href="/my_app/login/">登出</a>
+				</li>
+
+							 
+				<li class="divider">
+				</li>
+			</ul>
+		</div>
+	</div>
+	</div>
+	</div>
+	
+	
+	
+	<div class="col-md-3">			
+	<div class="span4">
+		<table class="table table-bordered">
+		<thead>
+     <tr>
+       <th>编号</th>
+       <th>来源</th>
+       <th>事务介绍</th>
+       <th>材料数</th>
+    </tr>
+	</thead>
+    {% for task in tasklist %}
+    <tr>
+    	 <td>{{ forloop.counter }}</td>
+    	 <td>{{task.user.uname}}</td>
+    	 <td>{{task.description}}</td>
+    	 <td>{{task.total_material}}</td>
+    	 <td><input type="button" id="{{task.user.uname}}" value="进入审查" onclick="checkspecifictask(this.id)"></td>
+    </tr>
+    {% endfor %}
+  </table>
+  </div>
+  </div>
+  
+	<form action="/rewardu/materialpage/checkspecifictask/" name="form1">
+   	 <input type="hidden" name="username" id="username" value="0">
+   </form>
+</body>
+</html>

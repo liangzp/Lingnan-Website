@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html>
+<head> 
+     <meta charset="utf-8">
+     <title>修改已有加分项</title>
+     <script>
+     	  function jumptoedit(id)
+     	  {
+     	  	var mat_id=document.getElementById("material_id");
+     	  	mat_id.value=id;
+     	  	var form1=document.form1;
+     	  	form1.submit();
+     	  }
+     </script>
+</head>
+
+<body>
+	<p>校级奖学金评选</p><br>
+	<a href="/rewardu/materialpage/">返回奖学金相关业务主页</a>
+	<table border="1">
+        <tr>
+           <th>加分项编号</th>
+           <th>说明</th>
+           <th>提交时加的绩点</th>
+           <th>审核后加的绩点</th>
+           <!--
+           <th>提交时加的公益时</th>
+           <th>审核后加的公益时</th>
+           -->
+           <th></th>
+        </tr>
+        {% for material in materiallist %}
+        <tr>
+        	 <td>{{ forloop.counter }}</td>
+        	 <td>{{material.description}}</td>
+        	 <td>{{material.initscore}}</td>
+        	 <td>{{material.extrascore}}</td>
+        	 <!--
+        	 <td>{{material.initpublic}}</td>
+        	 <td>{{material.extrapublic}}</td>
+        	 -->
+        	 <td><input type="button" id="{{material.materialid}}" value="进入修改" onclick="jumptoedit(this.id)"></td>
+        </tr>
+        {% endfor %}
+     </table>
+   <form action="/rewardu/materialpage/editspecificmaterial/" name="form1">
+   	 <input type="hidden" name="material_id" id="material_id" value="0">
+   </form>	
+</body>
+</html>
