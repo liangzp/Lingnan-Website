@@ -8,14 +8,14 @@ Created on Tue Dec 18 20:34:10 2018
 from my_app.models import User
 from reward.models import Task,Material,Opinion
 user=User.objects.filter(uname="16332092")[0]
-task=Task.objects.filter(user=user).filter(description="奖学金")[0]
+task=Task.objects.filter(user=user).filter(description="院级奖学金")[0]
 material=Material.objects.filter(task=task)[0]
 
 #%%
 from my_app.models import User
 from reward.models import Task,Material
 import os
-tasklist=Task.objects.filter(description="奖学金")
+tasklist=Task.objects.filter(description="院级奖学金")
 rootpath="E:/工作事务/小组工作/大三上/管理信息系统/期末作业/project/Lingnan-Website/reward/pic/"
 for task in tasklist:
     if os.path.exists(rootpath+task.user.uname):
@@ -47,16 +47,30 @@ for i in range(1,14):
                       room=datapiece[1],maxnum=int(datapiece[2]),\
                       status=str(datapiece[3:]))
         cla.save()
-#%%给所有人初始化奖学金流程
+#%%给所有人初始化院级奖学金流程
 from my_app.models import User
 from reward.models import Task,Material
 
 userlist=User.objects.all()
 for user in userlist:
     if user.role=="student":
-        checkorder=str(['self','16332124','16332144'])
-        checkorder_char=str(['提交材料','学委审核','学工办第一次审核'])
-        task=Task(user=user,description="奖学金",checkorder=checkorder,\
+        checkorder=str(['self','16332124','publish'])
+        checkorder_char=str(['提交材料','学委审核','公示'])
+        task=Task(user=user,description="院级奖学金",checkorder=checkorder,\
+                  checkorder_char=checkorder_char,status=1,now_checker='self')
+        #李子天学委，16332092
+        #吕笳赈学工办大佬16332124
+        task.save()
+#%%给所有人初始化校级奖学金流程
+from my_app.models import User
+from rewardu.models import Tasku,Materialu
+
+userlist=User.objects.all()
+for user in userlist:
+    if user.role=="student":
+        checkorder=str(['self','16332124','publish'])
+        checkorder_char=str(['提交材料','学委审核','公示'])
+        task=Tasku(user=user,description="校级奖学金",checkorder=checkorder,\
                   checkorder_char=checkorder_char,status=1,now_checker='self')
         #李子天学委，16332092
         #吕笳赈学工办大佬16332124
@@ -84,3 +98,104 @@ opinionlist=Opinion.objects.all()
 for i in range(len(opinionlist)):
     opinion=opinionlist[i]
     opinion.delete()
+#%%清空已有的审批院级奖学金任务
+from my_app.models import User
+from reward.models import Task,Material,Opinion
+tasklist=Task.objects.all()
+for i in range(len(tasklist)):
+    task=tasklist[i]
+    task.delete()
+#%%清空已有的审批校级奖学金任务
+from my_app.models import User
+from rewardu.models import Tasku,Materialu,Opinionu
+tasklist=Tasku.objects.all()
+for i in range(len(tasklist)):
+    task=tasklist[i]
+    task.delete()
+#%%修改院级奖学金任务的进度
+from my_app.models import User
+from reward.models import Task
+user=User.objects.filter(uname="16332092")[0]
+task=Task.objects.filter(user=user).filter(description="院级奖学金")[0]
+task.status=2
+task.now_checker=eval(task.checkorder)[task.status-1]
+task.save()
+#%%修改校级奖学金任务的进度
+from my_app.models import User
+from rewardu.models import Tasku
+user=User.objects.filter(uname="16332092")[0]
+task=Tasku.objects.filter(user=user).filter(description="校级奖学金")[0]
+task.status=2
+task.now_checker=eval(task.checkorder)[task.status-1]
+task.save()
+#%%读取每个人的院级总加分数
+import pandas as pd
+from my_app.models import User
+from reward.models import Task,Material,Result
+Result.objects.all().delete()
+#datacollege=pd.DataFrame({'学号':[],'院级总加分':[]}) 
+for user in User.objects.all():
+    if user.role=="administrator":
+        continue
+    task=Task.objects.filter(user=user).filter(description="院级奖学金")
+    extrascore=0
+    if len(task)==0:
+        #datacollege.loc[datacollege.shape[0]]=[name,extrascore]
+        re=Result(extrascore=extrascore,uname=user.uname)
+        re.save()
+        continue
+    task=task[0]
+    materiallist=Material.objects.filter(task=task)
+    if len(materiallist)==0:
+        #datacollege.loc[datacollege.shape[0]]=[name,extrascore]
+        re=Result(extrascore=extrascore,uname=user.uname)
+        re.save()
+        continue
+    for material in materiallist:
+        extrascore=extrascore+material.extrascore
+    re=Result(extrascore=extrascore,uname=user.uname)
+    re.save()
+    #datacollege.loc[datacollege.shape[0]]=[name,extrascore]
+'''
+datacollege.sort_values(by='学号',ascending=True,inplace=True)
+#writer = pd.ExcelWriter(u'E:\\工作事务\\小组工作\\大三上\\管理信息系统\\期末作业\\project\\Lingnan-Website\\college.xlsx')
+writer = pd.ExcelWriter('college.xlsx')
+datacollege.to_excel(writer,sheet_name='Sheet1')
+datacollege.to_csv('college.csv',encoding="utf-8",index=False)
+'''
+#%%
+#import pandas as pd
+from my_app.models import User
+from rewardu.models import Tasku,Materialu,Resultu
+Resultu.objects.all().delete()
+#datauniversity=pd.DataFrame({'学号':[],'校级总加分':[],'公益时总数':[]}) 
+for user in User.objects.all():
+    #name=user.uname
+    if user.role=="administrator":
+        continue
+    task=Tasku.objects.filter(user=user).filter(description="校级奖学金")
+    extrascore=0
+    extrapublic=0
+    if len(task)==0:
+        #datauniversity.loc[datauniversity.shape[0]]=[name,extrascore,extrapublic]
+        re=Resultu(extrascore=extrascore,extrapublic=extrapublic,uname=user.uname)
+        re.save()
+        continue
+    task=task[0]
+    materiallist=Materialu.objects.filter(task=task)
+    if len(materiallist)==0:
+        #datauniversity.loc[datauniversity.shape[0]]=[name,extrascore,extrapublic]
+        re=Resultu(extrascore=extrascore,extrapublic=extrapublic,uname=user.uname)
+        re.save()
+        continue
+    for material in materiallist:
+        extrascore=extrascore+material.extrascore
+        extrapublic=extrapublic+material.extrapublic
+    re=Resultu(extrascore=extrascore,extrapublic=extrapublic,uname=user.uname)
+    re.save()
+'''
+    datauniversity.loc[datauniversity.shape[0]]=[name,extrascore,extrapublic] 
+datauniversity.sort_values(by=u'学号',ascending=True,inplace=True)
+datauniversity.to_csv('university.csv',encoding="utf-8",index=False)
+'''
+
