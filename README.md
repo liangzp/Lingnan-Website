@@ -10,10 +10,11 @@ A Website serving as educational administration system for management informatio
 ![Login](https://raw.githubusercontent.com/liangzp/Lingnan-Website/master/welcome.png)
 
 ![Login](https://raw.githubusercontent.com/liangzp/Lingnan-Website/master/welcome2.png)
-
+The details can be seen in ![report]()
 ## Contributors
 ---------------------------------------------
 + Zitian Li
 + Zhipeng Liang
 + Enqi Yang
 + Siyuan Liu
+
