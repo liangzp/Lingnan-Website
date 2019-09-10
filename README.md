@@ -1,17 +1,17 @@
 # Lingnan-Website
 A Website serving as educational administration system for management information system
 
-### Login
+## Login
 ------------------------------------------------
 ![Login](https://raw.githubusercontent.com/liangzp/Lingnan-Website/master/login.png)
 
-### Welcome
+## Welcome
 ----------------------------------------------
 ![Login](https://raw.githubusercontent.com/liangzp/Lingnan-Website/master/welcome.png)
 
 ![Login](https://raw.githubusercontent.com/liangzp/Lingnan-Website/master/welcome2.png)
 
-### Contributors
+## Contributors
 ---------------------------------------------
 + Zitian Li
 + Zhipeng Liang
