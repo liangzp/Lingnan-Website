@@ -1,5 +1,5 @@
 # Lingnan-Website
-A Website for management information system
+A Website serving as educational administration system for management information system
 
 ### Login
 ------------------------------------------------
