@@ -1,4 +1,19 @@
 # Lingnan-Website
 A Website for management information system
+
+### Login
 ------------------------------------------------
+![Login](https://raw.githubusercontent.com/liangzp/Lingnan-Website/master/login.png)
+
+### Welcome
+----------------------------------------------
 ![Login](https://raw.githubusercontent.com/liangzp/Lingnan-Website/master/welcome.png)
+
+![Login](https://raw.githubusercontent.com/liangzp/Lingnan-Website/master/welcome2.png)
+
+### Contributors
+---------------------------------------------
++ Zitian Li
++ Zhipeng Liang
++ Enqi Yang
++ Siyuan Liu
